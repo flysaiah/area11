@@ -11,6 +11,10 @@ app.use(cors());
 //import your models
 // TODO
 
+const router = express.Router();
+const animeAPI = require('./server/routes/animeAPI')(router);
+app.use('/api/anime', animeAPI);
+
 mongoose
   .connect(
     process.env.MONGODB_CONNECTION_STRING,
