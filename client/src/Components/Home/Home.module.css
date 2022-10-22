@@ -1,0 +1,12 @@
+.home-container {
+    display: flex;
+    width: 100%;
+    align-items: flex-start;
+    justify-content: center;
+}
+
+.home-pane {
+    width: 28%;
+    margin-left: 1%;
+    margin-right: 1%;
+}

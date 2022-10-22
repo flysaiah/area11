@@ -8,6 +8,10 @@ const cors = require("cors");
 const app = express();
 app.use(cors());
 
+//middleware
+app.use(bodyParser.urlencoded({ extended: true }));
+app.use(bodyParser.json());
+
 //import your models
 // TODO
 
@@ -16,19 +20,15 @@ const animeAPI = require('./server/routes/animeAPI')(router);
 app.use('/api/anime', animeAPI);
 
 mongoose
-  .connect(
-    process.env.MONGODB_CONNECTION_STRING,
-    {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }
-  )
-  .then(() => console.log("MongoDB has been connected"))
-  .catch((err) => console.log(err));
-
-//middleware
-app.use(bodyParser.urlencoded({ extended: true }));
-app.use(bodyParser.json());
+    .connect(
+        process.env.MONGODB_CONNECTION_STRING,
+        {
+            useNewUrlParser: true,
+            useUnifiedTopology: true,
+        }
+    )
+    .then(() => console.log("MongoDB has been connected"))
+    .catch((err) => console.log(err));
 
 const PORT = process.env.PORT || 5000;
 
@@ -39,9 +39,9 @@ const path = require("path");
 app.use(express.static(path.resolve(__dirname, "./client/build")));
 // Step 2:
 app.get("*", function (request, response) {
-  response.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
+    response.sendFile(path.resolve(__dirname, "./client/build", "index.html"));
 });
 
 app.listen(PORT, () => {
-  console.log(`server running on port ${PORT}`);
+    console.log(`server running on port ${PORT}`);
 });

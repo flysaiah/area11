@@ -1,14 +1,13 @@
 import React from 'react';
-import './App.css';
 
-import Catalog from './Components/Catalog';
+import Home from './Components/Home/Home';
 
 const App = () => {
-  return (
-    <React.Fragment>
-        <Catalog />
-    </React.Fragment>
-  );
+    return (
+        <React.Fragment>
+            <Home />
+        </React.Fragment>
+    );
 }
 
 export default App;
