@@ -9,7 +9,7 @@ const app = express();
 app.use(cors());
 
 //middleware
-app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 
 //import your models

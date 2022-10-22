@@ -18,14 +18,16 @@ const CatalogPane = () => {
 
     useEffect(() => {
         let username = localStorage.getItem("area11") // TODO: will eventually come from auth
-
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ username: username })
         };
 
-        fetch('http://localhost:5000/api/anime/fetchAnime', requestOptions) // TODO: get URL from env
+        var uri = process.env.REACT_APP_BACKEND_URI + '/api/anime/fetchAnime'; // move to service
+        console.log(uri)
+
+        fetch(uri, requestOptions)
             .then(response => response.json())
             .then(data => {
                 setAnimeList(data.animeList)
@@ -35,7 +37,6 @@ const CatalogPane = () => {
 
     return (
         <React.Fragment>
-            { }
             <List
                 sx={{
                     maxHeight: 500,

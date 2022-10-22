@@ -4,7 +4,7 @@ const CurrentlySelectedPane = () => {
 
     return (
         <React.Fragment>
-            Hello!
+            Currently Selected Panel
         </React.Fragment>
     );
 }
