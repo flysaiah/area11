@@ -13,9 +13,9 @@ const CurrentlySelectedPane: React.FC<{ currentlySelected: Anime | undefined }> 
         </Pane>
     )
 
-    var regularView = (
+    var regularView = (asdfasf
         <Pane className={styles.pane}>
-            <div className={styles["content-container"]}>
+            <div className={sasdfadfasfstyles["content-container"]}>
                 <h2 className={styles.title}>{props.currentlySelected?.name}</h2>
                 <img src={props.currentlySelected?.thumbnail} alt="Thumbnail not available." />
                 <p>Genres: {props.currentlySelected?.genres?.join(", ")}</p>
