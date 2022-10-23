@@ -1,23 +1,26 @@
-import React from 'react';
-import styles from './Home.module.css';
-
+import Grid from '@mui/material/Grid';
+import { useState } from 'react';
+import Anime from '../../Models/anime';
 import CatalogPane from './CatalogPane/CatalogPane';
 import CurrentlySelectedPane from './CurrentlySelectedPane/CurrentlySelectedPane';
 import FinalistsPane from './FinalistsPane/FinalistsPane';
 
 const Home = () => {
+
+    const [currentlySelected, setCurrentlySelected] = useState<Anime>();
+
     return (
-        <div className={styles["home-container"]}>
-            <div className={styles["home-pane"]}>
-                <CatalogPane />
-            </div>
-            <div className={styles["home-pane"]}>
-                <CurrentlySelectedPane />
-            </div>
-            <div className={styles["home-pane"]}>
+        <Grid container justifyContent="space-around">
+            <Grid item xs={3}>
+                <CatalogPane setCurrentlySelected={setCurrentlySelected} />
+            </Grid>
+            <Grid item xs={4}>
+                <CurrentlySelectedPane currentlySelected={currentlySelected} />
+            </Grid>
+            <Grid item xs={3}>
                 <FinalistsPane />
-            </div>
-        </div>
+            </Grid>
+        </Grid>
     );
 }
 

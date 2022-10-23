@@ -1,0 +1,14 @@
+.content-container {
+    padding: 10px;
+}
+
+.title {
+    margin-top: 3px;
+    margin-bottom: 8px;
+}
+
+.pane {
+    overflow: scroll;
+    height: 700px;
+    /* max-height: 700px; TODO: make this global var */
+}

@@ -1,0 +1,11 @@
+.catalog-pane {
+    max-height: 700px;
+    overflow: scroll;
+}
+
+.category-subheader {
+    border: 1px solid #c3c3c3;
+    border-width: 2px;
+    line-height: 30px !important;
+    background-color: darkred !important;
+}

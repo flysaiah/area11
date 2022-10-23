@@ -1,11 +1,11 @@
-import React from 'react';
+import Pane from '../../Pane/Pane';
 
 const FinalistsPane = () => {
 
     return (
-        <React.Fragment>
+        <Pane>
             Finalists Panel
-        </React.Fragment>
+        </Pane>
     );
 }
 
