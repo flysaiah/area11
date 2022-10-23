@@ -18,6 +18,7 @@ const CurrentlySelectedPane: React.FC<{ currentlySelected: Anime | undefined }> 
             <div className={styles["content-container"]}>
                 <h2 className={styles.title}>{props.currentlySelected?.name}</h2>
                 <img src={props.currentlySelected?.thumbnail} alt="Thumbnail not available." />
+                <p>Genres: {props.currentlySelected?.genres?.join(", ")}</p>
                 <p>{props.currentlySelected?.description}</p>
             </div>
         </Pane>
