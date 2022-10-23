@@ -5,19 +5,21 @@ import CatalogPane from './CatalogPane/CatalogPane';
 import CurrentlySelectedPane from './CurrentlySelectedPane/CurrentlySelectedPane';
 import FinalistsPane from './FinalistsPane/FinalistsPane';
 
+import Grid from '@mui/material/Grid';
+
 const Home = () => {
     return (
-        <div className={styles["home-container"]}>
-            <div className={styles["home-pane"]}>
+        <Grid container justifyContent="space-around">
+            <Grid item xs={3} height={750}>
                 <CatalogPane />
-            </div>
-            <div className={styles["home-pane"]}>
+            </Grid>
+            <Grid item xs={4} height={750}>
                 <CurrentlySelectedPane />
-            </div>
-            <div className={styles["home-pane"]}>
+            </Grid>
+            <Grid item xs={3} height={750}>
                 <FinalistsPane />
-            </div>
-        </div>
+            </Grid>
+        </Grid>
     );
 }
 

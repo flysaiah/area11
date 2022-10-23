@@ -4,7 +4,12 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
+import ListSubheader from '@mui/material/ListSubheader';
 import Divider from '@mui/material/Divider';
+
+import Pane from '../../Pane/Pane';
+
+import styles from './CatalogPane.module.css';
 
 import Anime from '../../../Models/anime';
 
@@ -36,13 +41,14 @@ const CatalogPane = () => {
     }, []);
 
     return (
-        <React.Fragment>
-            <List
+        <Pane>
+            <List dense={true}
                 sx={{
-                    maxHeight: 500,
+                    maxHeight: '100%',
                     overflow: 'auto'
                 }}
             >
+                <ListSubheader color='primary' className={styles["category-subheader"]}>Want to Watch ({wantToWatchList.length})</ListSubheader>
                 {wantToWatchList.map(anime => (
                     <ListItem disablePadding>
                         <ListItemButton>
@@ -50,14 +56,8 @@ const CatalogPane = () => {
                         </ListItemButton>
                     </ListItem>
                 ))}
-            </List>
-            <Divider />
-            <List
-                sx={{
-                    maxHeight: 500,
-                    overflow: 'auto'
-                }}
-            >
+                <Divider />
+                <ListSubheader color='primary' className={styles["category-subheader"]}>Considering ({consideringList.length})</ListSubheader>
                 {consideringList.map(anime => (
                     <ListItem disablePadding>
                         <ListItemButton>
@@ -65,14 +65,8 @@ const CatalogPane = () => {
                         </ListItemButton>
                     </ListItem>
                 ))}
-            </List>
-            <Divider />
-            <List
-                sx={{
-                    maxHeight: 500,
-                    overflow: 'auto'
-                }}
-            >
+                <Divider />
+                <ListSubheader color='primary' className={styles["category-subheader"]}>Completed ({completedList.length})</ListSubheader>
                 {completedList.map(anime => (
                     <ListItem disablePadding>
                         <ListItemButton>
@@ -81,7 +75,7 @@ const CatalogPane = () => {
                     </ListItem>
                 ))}
             </List>
-        </React.Fragment>
+        </Pane>
     );
 }
 

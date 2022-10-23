@@ -1,0 +1,8 @@
+.pane {
+    text-align: center;
+    border: 1px solid #c3c3c3;
+    border-style: double;
+    border-width: 5px;
+    height: inherit;
+    padding-bottom: 18px;
+  }

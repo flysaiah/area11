@@ -1,11 +1,14 @@
 import React from 'react';
 
+import Pane from '../../Pane/Pane';
+
+
 const CurrentlySelectedPane = () => {
 
     return (
-        <React.Fragment>
+        <Pane>
             Currently Selected Panel
-        </React.Fragment>
+        </Pane>
     );
 }
 
