@@ -1,5 +1,3 @@
-import React from 'react';
-
 import Pane from '../../Pane/Pane';
 
 const FinalistsPane = () => {

@@ -4,5 +4,6 @@
     border-style: double;
     border-width: 5px;
     height: inherit;
-    padding-bottom: 18px;
+    padding: 2px;
+    background-color: white;
   }
