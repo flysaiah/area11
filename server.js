@@ -9,14 +9,16 @@ const app = express();
 app.use(cors());
 
 //middleware
-// app.use(bodyParser.urlencoded({ extended: true }));
+// app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
-//import your models
-// TODO
+//import models
+// TODO - organize
 
 const router = express.Router();
 const animeAPI = require('./server/routes/animeAPI')(router);
+const authentication = require('./server/routes/authentication')(router);
+app.use('/authentication', authentication);
 app.use('/api/anime', animeAPI);
 
 mongoose
