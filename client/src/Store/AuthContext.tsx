@@ -19,8 +19,6 @@ export const AuthContextProvider = (props: any) => {
     const logoutHandler = useCallback(() => {
         setToken(null);
         localStorage.removeItem('token');
-        localStorage.removeItem('expiration');
-
     }, []);
 
     const loginHandler = (token: string) => {
