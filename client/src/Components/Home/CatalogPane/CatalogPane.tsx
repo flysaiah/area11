@@ -15,9 +15,9 @@ const CatalogPane: React.FC<{ setCurrentlySelected: React.Dispatch<React.SetStat
 
     const [animeList, setAnimeList] = useState<Anime[]>([]);
 
-    const wantToWatchList = animeList.filter(anime => anime.category == "Want to Watch");
-    const consideringList = animeList.filter(anime => anime.category == "Considering");
-    const completedList = animeList.filter(anime => anime.category == "Completed");
+    const wantToWatchList = animeList.filter(anime => anime.category === "Want to Watch");
+    const consideringList = animeList.filter(anime => anime.category === "Considering");
+    const completedList = animeList.filter(anime => anime.category === "Completed");
 
     // Fetch
 
