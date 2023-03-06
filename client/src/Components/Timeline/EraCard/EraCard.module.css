@@ -1,0 +1,17 @@
+.card {
+    margin: 10px;
+    width: 500px;
+}
+
+.era-header {
+    text-align: center;
+}
+
+.era-title {
+    margin-bottom: -10px;
+}
+
+.entry {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}

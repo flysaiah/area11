@@ -12,7 +12,7 @@ const App = () => {
     return (
 
         <Routes>
-            <Route path="/" element={ authContext.isLoggedIn ? <Navigate replace to="/home" /> : <Navigate replace to="/login" />} />
+            <Route path="/" element={authContext.isLoggedIn ? <Navigate replace to="/home" /> : <Navigate replace to="/login" />} />
             <Route path="/login" element={authContext.isLoggedIn ? <Navigate replace to="/home" /> : <Login />} />
             <Route path="/home" element={authContext.isLoggedIn ? <Home /> : <Navigate replace to="/login" />} />
             <Route path="/timeline" element={authContext.isLoggedIn ? <Timeline /> : <Navigate replace to="/login" />} />

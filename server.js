@@ -16,10 +16,13 @@ app.use(bodyParser.json());
 // TODO - organize
 
 const router = express.Router();
-const animeAPI = require('./server/routes/animeAPI')(router);
 const authentication = require('./server/routes/authentication')(router);
+const animeAPI = require('./server/routes/animeAPI')(router);
+const timelineAPI = require('./server/routes/timelineAPI')(router);
+
 app.use('/authentication', authentication);
 app.use('/api/anime', animeAPI);
+app.use('/api/timeline', timelineAPI);
 
 mongoose
     .connect(
