@@ -1,0 +1,25 @@
+.card {
+    margin: 10px;
+    width: 500px;
+}
+
+.era-header {
+    text-align: center;
+}
+
+.era-subheader {
+    margin-bottom: -10px;
+}
+
+.era-title {
+    margin-bottom: -10px;
+}
+
+.entries-editable {
+    width: 450px !important;
+}
+
+.entry {
+    margin-top: 0px;
+    margin-bottom: 0px;
+}

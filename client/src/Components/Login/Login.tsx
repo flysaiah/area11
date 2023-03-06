@@ -28,8 +28,7 @@ const Login = () => {
             .then(response => response.json())
             .then(data => {
                 // TODO: error handling
-
-                authContext.login(data.token);
+                authContext.login(data.token, userInfo.username);
             });
     }
 

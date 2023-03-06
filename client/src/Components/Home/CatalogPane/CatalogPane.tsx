@@ -4,15 +4,16 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
-import React, { useEffect, useState } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import Anime from '../../../Models/anime';
+import AuthContext from "../../../Store/AuthContext";
 import Pane from '../../Pane/Pane';
 import styles from './CatalogPane.module.css';
 
 const CatalogPane: React.FC<{ setCurrentlySelected: React.Dispatch<React.SetStateAction<Anime | undefined>> }> = (props) => {
 
     // Setup
-
+    const authContext = useContext(AuthContext);
     const [animeList, setAnimeList] = useState<Anime[]>([]);
 
     const wantToWatchList = animeList.filter(anime => anime.category === "Want to Watch");
@@ -22,10 +23,10 @@ const CatalogPane: React.FC<{ setCurrentlySelected: React.Dispatch<React.SetStat
     // Fetch
 
     useEffect(() => {
-        let username = localStorage.getItem("area11") // TODO: will eventually come from auth
+        let username = authContext.username!;
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
+            headers: { 'Content-Type': 'application/json', 'authorization': authContext.token! }, // TODO: refactor into service
             body: JSON.stringify({ username: username })
         };
 
