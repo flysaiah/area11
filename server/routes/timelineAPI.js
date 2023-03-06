@@ -5,7 +5,6 @@ const Group = require("../models/group.js");
 
 module.exports = (router) => {
   router.post('/saveTimeline', (req, res) => {
-    // Save state of timeline (currently only possible after editing 1 era at a time)
     Timeline.findOneAndUpdate({ "user": ObjectId(req.decoded.userId) }, { $set: { eras: req.body.eras } }, (err, timeline) => {
       if (err) {
         res.json({ success: false, message: err });

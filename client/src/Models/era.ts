@@ -3,9 +3,9 @@ export default class Era {
         public name: string,
         public subHeader: string,
         public entries: string[],
-        public startDate: Date,
-        public endDate: Date,
+        public startDate: string,
+        public endDate: string,
         public backgroundColor: string,
-        public whiteText: boolean,
+        public whiteText: boolean
     ) { }
 }
