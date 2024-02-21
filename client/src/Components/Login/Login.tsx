@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import AuthContext from "../../Store/AuthContext";
 import LoginForm from "./LoginForm";
 import UserInfo from "../../Models/userInfo";
+import OperationResult from "../../Models/operationresult";
 
 const Login = () => {
     const navigate = useNavigate();
@@ -25,10 +26,15 @@ const Login = () => {
         var uri = process.env.REACT_APP_BACKEND_URI + '/authentication/login'; // move to service
 
         fetch(uri, requestOptions)
-            .then(response => response.json())
-            .then(data => {
-                // TODO: error handling
-                authContext.login(data.token, userInfo.username);
+            .then(response => response.json() as Promise<OperationResult>)
+            .then(res => {
+                if (!res.success) {
+                    console.log("Error logging in: " + res.message)
+                    // TODO: UI for error handling in general
+                    return;
+                }
+
+                authContext.login(res.data.token, res.data.user.username);
             });
     }
 

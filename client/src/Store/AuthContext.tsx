@@ -1,7 +1,5 @@
 import React, { useState, useCallback } from 'react';
 
-// TODO: expire token(?)
-
 const AuthContext = React.createContext<{ token: string | null, username: string | null, isLoggedIn: boolean, login: (token: string, username: string) => void, logout: () => void }>({
     token: '',
     username: '',

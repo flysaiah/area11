@@ -17,7 +17,7 @@ module.exports = (router) => {
           if (user.comparePassword(req.body.password)) {
             // Password checks out
             const token = jwt.sign({ userId: user._id }, config.secret, { expiresIn: '504h' });
-            res.json({ success: true, message: "Success", token: token, user: { username: user.username }});
+            res.json({ success: true, message: "Success", data: { token: token, user: { username: user.username } }});
           } else {
             res.json({ success: false, message: "Incorrect password." });
           }
@@ -30,11 +30,12 @@ module.exports = (router) => {
   router.use((req, res, next) => {
     const token = req.headers['authorization'];
     if (!token) {
-      res.json({ success: false, message: "Token" });
+      res.json({ success: false, message: "Area11Error.Auth - Error verifying JWT token: No token found" });
     } else {
       jwt.verify(token, config.secret, (err, decoded) => {
         if (err) {
-          res.json({ success: false, message: "Token" });
+          console.log("Error verifying JWT token: " + err?.message);
+          res.json({ success: false, message: "Area11Error.Auth - " + err?.message });
         } else {
           req.decoded = decoded;
           next();

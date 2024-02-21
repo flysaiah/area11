@@ -6,7 +6,7 @@ module.exports = (router) => {
             if (err) {
                 res.json({ success: false, message: err });
             } else {
-                res.json({ success: true, animeList: animeList })
+                res.json({ success: true, data: { animeList: animeList } })
             }
         });
     });
