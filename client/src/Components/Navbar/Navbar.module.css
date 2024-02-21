@@ -1,0 +1,19 @@
+.search-toolbar {
+  width: 100%;
+  color: #f0f0f0;
+  vertical-align: middle;
+  /* background-color: mat-color($primary); */
+  border: 1px solid #330000;
+  border-width: 2px;
+  height: 40px;
+  line-height: 40px;
+  text-shadow: 1px 1px 0 #444;
+}
+.search-toolbar-inner-container {
+display: flex;
+justify-content: flex-end;
+align-items: center;
+width: 800px;
+float: right;
+margin-right: 50px;
+}
