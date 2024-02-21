@@ -9,6 +9,7 @@ import Anime from '../../../Models/anime';
 import AuthContext from "../../../Store/AuthContext";
 import Pane from '../../Pane/Pane';
 import styles from './CatalogPane.module.css';
+import OperationResult from "../../../Models/operationresult";
 
 const CatalogPane: React.FC<{ setCurrentlySelected: React.Dispatch<React.SetStateAction<Anime | undefined>> }> = (props) => {
 
@@ -33,9 +34,18 @@ const CatalogPane: React.FC<{ setCurrentlySelected: React.Dispatch<React.SetStat
         var uri = process.env.REACT_APP_BACKEND_URI + '/api/anime/fetchAnime'; // move to service
 
         fetch(uri, requestOptions)
-            .then(response => response.json())
-            .then(data => {
-                setAnimeList(data.animeList);
+            .then(response => response.json() as Promise<OperationResult>)
+            .then(res => {
+                if (!res?.success) {
+                    console.log("Error fetching anime list: " + res.message);
+
+                    if (res.message.includes("Area11Error.Auth")) {
+                        authContext.logout();
+                        return;
+                    }
+                }
+
+                setAnimeList(res?.data.animeList);
             });
 
     }, []);
@@ -59,7 +69,7 @@ const CatalogPane: React.FC<{ setCurrentlySelected: React.Dispatch<React.SetStat
             <List dense={true} sx={listSX}>
                 <ListSubheader color="primary" sx={subheaderSX}>Want to Watch ({wantToWatchList.length})</ListSubheader>
                 {wantToWatchList.map(anime => (
-                    <ListItem disablePadding onClick={() => props.setCurrentlySelected(anime)}>
+                    <ListItem disablePadding key={anime._id} onClick={() => props.setCurrentlySelected(anime)}>
                         <ListItemButton>
                             <ListItemText primary={anime.name} />
                         </ListItemButton>
@@ -68,7 +78,7 @@ const CatalogPane: React.FC<{ setCurrentlySelected: React.Dispatch<React.SetStat
                 <Divider />
                 <ListSubheader color="primary" sx={subheaderSX}>Considering ({consideringList.length})</ListSubheader>
                 {consideringList.map(anime => (
-                    <ListItem disablePadding onClick={() => props.setCurrentlySelected(anime)}>
+                    <ListItem disablePadding key={anime._id} onClick={() => props.setCurrentlySelected(anime)}>
                         <ListItemButton>
                             <ListItemText primary={anime.name} />
                         </ListItemButton>
@@ -77,7 +87,7 @@ const CatalogPane: React.FC<{ setCurrentlySelected: React.Dispatch<React.SetStat
                 <Divider />
                 <ListSubheader color="primary" sx={subheaderSX}>Completed ({completedList.length})</ListSubheader>
                 {completedList.map(anime => (
-                    <ListItem disablePadding onClick={() => props.setCurrentlySelected(anime)}>
+                    <ListItem disablePadding key={anime._id} onClick={() => props.setCurrentlySelected(anime)}>
                         <ListItemButton>
                             <ListItemText primary={anime.name} />
                         </ListItemButton>
