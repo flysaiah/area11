@@ -4,27 +4,31 @@ import Home from './Components/Home/Home';
 import Login from "./Components/Login/Login";
 import Timeline from "./Components/Timeline/Timeline";
 import AuthContext from "./Store/AuthContext";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import { AppTheme } from "./Themes/theme";
 
 const App = () => {
 
     const authContext = useContext(AuthContext);
 
     return (
-
-        <Routes>
-            <Route path="/" element={authContext.isLoggedIn ? <Navigate replace to="/home" /> : <Navigate replace to="/login" />} />
-            <Route path="/login" element={authContext.isLoggedIn ? <Navigate replace to="/home" /> : <Login />} />
-            <Route path="/home" element={authContext.isLoggedIn ? <Home /> : <Navigate replace to="/login" />} />
-            <Route path="/timeline" element={authContext.isLoggedIn ? <Timeline /> : <Navigate replace to="/login" />} />
-            <Route
-                path="*"
-                element={
-                    <div>
-                        <p>404 Page not Found</p>
-                    </div>
-                }
-            />
-        </Routes>
+        <ThemeProvider theme={AppTheme}>
+            <CssBaseline enableColorScheme/>
+            <Routes>
+                <Route path="/" element={authContext.isLoggedIn ? <Navigate replace to="/home" /> : <Navigate replace to="/login" />} />
+                <Route path="/login" element={authContext.isLoggedIn ? <Navigate replace to="/home" /> : <Login />} />
+                <Route path="/home" element={authContext.isLoggedIn ? <Home /> : <Navigate replace to="/login" />} />
+                <Route path="/timeline" element={authContext.isLoggedIn ? <Timeline /> : <Navigate replace to="/login" />} />
+                <Route
+                    path="*"
+                    element={
+                        <div>
+                            <p>404 Page not Found</p>
+                        </div>
+                    }
+                />
+            </Routes>
+        </ThemeProvider>
     );
 }
 

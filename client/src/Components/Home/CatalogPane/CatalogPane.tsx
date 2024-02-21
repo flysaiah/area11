@@ -67,7 +67,7 @@ const CatalogPane: React.FC<{ setCurrentlySelected: React.Dispatch<React.SetStat
     return (
         <Pane className={styles["catalog-pane"]}>
             <List dense={true} sx={listSX}>
-                <ListSubheader color="primary" sx={subheaderSX}>Want to Watch ({wantToWatchList.length})</ListSubheader>
+                <ListSubheader sx={subheaderSX}>Want to Watch ({wantToWatchList.length})</ListSubheader>
                 {wantToWatchList.map(anime => (
                     <ListItem disablePadding key={anime._id} onClick={() => props.setCurrentlySelected(anime)}>
                         <ListItemButton>
@@ -76,7 +76,7 @@ const CatalogPane: React.FC<{ setCurrentlySelected: React.Dispatch<React.SetStat
                     </ListItem>
                 ))}
                 <Divider />
-                <ListSubheader color="primary" sx={subheaderSX}>Considering ({consideringList.length})</ListSubheader>
+                <ListSubheader sx={subheaderSX}>Considering ({consideringList.length})</ListSubheader>
                 {consideringList.map(anime => (
                     <ListItem disablePadding key={anime._id} onClick={() => props.setCurrentlySelected(anime)}>
                         <ListItemButton>
@@ -85,7 +85,7 @@ const CatalogPane: React.FC<{ setCurrentlySelected: React.Dispatch<React.SetStat
                     </ListItem>
                 ))}
                 <Divider />
-                <ListSubheader color="primary" sx={subheaderSX}>Completed ({completedList.length})</ListSubheader>
+                <ListSubheader sx={subheaderSX}>Completed ({completedList.length})</ListSubheader>
                 {completedList.map(anime => (
                     <ListItem disablePadding key={anime._id} onClick={() => props.setCurrentlySelected(anime)}>
                         <ListItemButton>
