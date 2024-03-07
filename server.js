@@ -18,9 +18,11 @@ app.use(bodyParser.json());
 const router = express.Router();
 const authentication = require('./server/routes/authentication')(router);
 const animeAPI = require('./server/routes/animeAPI')(router);
+const userAPI = require('./server/routes/userAPI')(router);
 const timelineAPI = require('./server/routes/timelineAPI')(router);
 
 app.use('/authentication', authentication);
+app.use('/api/user', userAPI);
 app.use('/api/anime', animeAPI);
 app.use('/api/timeline', timelineAPI);
 

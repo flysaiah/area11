@@ -3,7 +3,7 @@ import { useTheme } from "@mui/material";
 import AuthContext from "../../Store/AuthContext";
 import styles from './Navbar.module.css';
 
-const Header: React.FC<{}> = (props) => {
+const Navbar: React.FC<{}> = (props) => {
 
     // Setup
     const authContext = useContext(AuthContext);
@@ -38,4 +38,4 @@ const Header: React.FC<{}> = (props) => {
     );
 }
 
-export default Header;
+export default Navbar;

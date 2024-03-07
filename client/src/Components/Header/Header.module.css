@@ -1,0 +1,35 @@
+.top-wrapper {
+    padding-top: 10px;
+    padding-bottom: 8px;
+    height: 70px;
+    vertical-align: middle;
+    display: flex;
+    justify-content: space-between;
+}
+.profile-container {
+    margin-right: 50px;
+}
+.profile-username {
+    position: absolute;
+    top: 15px;
+    right: 110px;
+    font-size: 28px;
+}
+.profile-avatar {
+    border: 1px solid black;
+}
+.avatar-container:hover {
+    cursor: pointer;
+}
+.main-logo {
+    font-family: "Syncopate", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    font-size: 41px;
+    margin-left: 10px;
+    text-decoration: none;
+    text-shadow: 0px 1px 0px #000000;
+}
+.main-logo:hover {
+    cursor: pointer;
+}

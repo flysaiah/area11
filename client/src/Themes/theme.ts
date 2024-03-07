@@ -1,4 +1,4 @@
-import { deepOrange } from "@mui/material/colors";
+import { blue, blueGrey, deepOrange, lightBlue } from "@mui/material/colors";
 import { createTheme } from "@mui/material/styles";
  
 export const AppTheme = createTheme({
@@ -19,22 +19,7 @@ export const AppTheme = createTheme({
         A400 : '#ff1d21',
         A700 : '#ff0308',
     },
-    secondary: {
-        50 : '#e8f0f8',
-        100 : '#c5daee',
-        200 : '#9ec2e3',
-        300 : '#77aad7',
-        400 : '#5a97cf',
-        500 : '#3d85c6',
-        600 : '#377dc0',
-        700 : '#2f72b9',
-        800 : '#2768b1',
-        900 : '#1a55a4',
-        A100 : '#dae9ff',
-        A200 : '#a7caff',
-        A400 : '#74abff',
-        A700 : '#5b9cff',
-    },
+    secondary: lightBlue,
     warning: deepOrange
   }
 });

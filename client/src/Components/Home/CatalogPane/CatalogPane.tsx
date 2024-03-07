@@ -48,7 +48,7 @@ const CatalogPane: React.FC<{ setCurrentlySelected: React.Dispatch<React.SetStat
                 setAnimeList(res?.data.animeList);
             });
 
-    }, []);
+    }, [authContext]);
 
     // JSX
 

@@ -1,8 +1,7 @@
-import { Button, Card, CardActions, CardContent, TextField } from "@mui/material";
+import { Button, Card, CardActions, CardContent, TextField, useTheme } from "@mui/material";
 import React, { useState } from 'react';
 import Era from "../../../Models/era";
 import styles from './EraCard.module.css';
-
 const EraCard:React.FC<{
     era: Era,
     index: number,
@@ -11,6 +10,8 @@ const EraCard:React.FC<{
     saveChanges: (era:Era) => void,
     canAddNewEra: boolean,
     addNewEra: () => void}> = (props) => {
+
+    const theme = useTheme();
 
     const [entries, setEntries] = useState<string>(props.era.entries.join("\n"));
     const [name, setName] = useState<string>(props.era.name);
@@ -31,8 +32,8 @@ const EraCard:React.FC<{
     }
 
     const getReadOnlyEntries = () => {
-        return entries.split("\n").map(entry => (
-            <p className={styles["entry"]}>{entry}</p>
+        return entries.split("\n").map((entry, idx) => (
+            <p key={era.name + "_entry_" + idx} className={styles["entry"]}>{entry}</p>
         ));
     };
 
@@ -108,9 +109,9 @@ const EraCard:React.FC<{
                 </div>
             </CardContent>
             <CardActions>
-                {isEditing() ? (<Button variant="contained" onClick={saveChanges}>Save</Button>) : null}
-                {isEditing() ? (<Button variant="contained" onClick={cancelChanges}>Cancel</Button>) : null}
-                {!isEditing() ? (<Button variant="contained" disabled={!isEditable()} onClick={() => props.setEditingEraIndex(props.index)}>Edit</Button>) : null}
+                {isEditing() ? (<Button variant="contained" style={{"backgroundColor": theme.palette.secondary.dark}} onClick={saveChanges}>Save</Button>) : null}
+                {isEditing() ? (<Button variant="contained" style={{"backgroundColor": theme.palette.warning.main}} onClick={cancelChanges}>Cancel</Button>) : null}
+                {!isEditing() ? (<Button variant="contained" style={{"backgroundColor": theme.palette.secondary.dark}} disabled={!isEditable()} onClick={() => props.setEditingEraIndex(props.index)}>Edit</Button>) : null}
                 {props.canAddNewEra ? (<Button variant="contained" disabled={!isEditable() || isEditing()} onClick={props.addNewEra}>Add New Era</Button>) : null}
 
             </CardActions>

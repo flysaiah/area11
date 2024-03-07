@@ -1,9 +1,11 @@
 import { Grid } from "@mui/material";
-import React, { useContext, useEffect, useState } from 'react';
+import React, { Fragment, useContext, useEffect, useState } from 'react';
 import Era from "../../Models/era";
 import AuthContext from "../../Store/AuthContext";
 import EraCard from "./EraCard/EraCard";
 import styles from "./Timeline.module.css";
+import Header from "../Header/Header";
+import Navbar from "../Navbar/Navbar";
 
 const Timeline = () => {
 
@@ -28,7 +30,6 @@ const Timeline = () => {
         fetch(uri, requestOptions)
             .then(response => response.json())
             .then(data => {
-                console.log(data);
                 setEraList(data.timeline.eras);
             });
 
@@ -91,20 +92,25 @@ const Timeline = () => {
     }
 
     return (
-        <Grid container justifyContent="space-around">
-            <Grid item>
-                {eraList.map((era, idx) => (
-                    <EraCard
-                        era={era}
-                        index={idx}
-                        editingEraIndex={editingEraIndex}
-                        setEditingEraIndex={setEditingEraIndex}
-                        saveChanges={(era) => saveTimeline(era)}
-                        canAddNewEra={idx === eraList.length - 1}
-                        addNewEra={addNewEra}/>
-                ))}                
+        <Fragment>
+            <Header></Header>
+            <Navbar></Navbar>
+            <Grid container justifyContent="space-around">
+                <Grid item>
+                    {eraList.map((era, idx) => (
+                        <EraCard
+                            key={era.name}
+                            era={era}
+                            index={idx}
+                            editingEraIndex={editingEraIndex}
+                            setEditingEraIndex={setEditingEraIndex}
+                            saveChanges={(era) => saveTimeline(era)}
+                            canAddNewEra={idx === eraList.length - 1}
+                            addNewEra={addNewEra}/>
+                    ))}
+                </Grid>
             </Grid>
-        </Grid>
+        </Fragment>
     );
 }
 

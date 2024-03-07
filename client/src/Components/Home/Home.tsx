@@ -5,12 +5,14 @@ import CatalogPane from './CatalogPane/CatalogPane';
 import CurrentlySelectedPane from './CurrentlySelectedPane/CurrentlySelectedPane';
 import FinalistsPane from './FinalistsPane/FinalistsPane';
 import Navbar from "../Navbar/Navbar";
+import Header from "../Header/Header";
 
 const Home = () => {
     const [currentlySelected, setCurrentlySelected] = useState<Anime>();
 
     return (
         <Fragment>
+            <Header></Header>
             <Navbar></Navbar>
             <Grid container justifyContent="space-around">
                 <Grid item xs={3}>
