@@ -1,0 +1,8 @@
+.search-toolbar-inner-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 800px;
+    float: right;
+    margin-right: 50px;
+}

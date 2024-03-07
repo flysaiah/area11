@@ -6,12 +6,15 @@ import EraCard from "./EraCard/EraCard";
 import styles from "./Timeline.module.css";
 import Header from "../Header/Header";
 import Navbar from "../Navbar/Navbar";
+import { useNavigate } from "react-router-dom";
 
 const Timeline = () => {
 
     // Setup
 
     const authContext = useContext(AuthContext);
+    const navigate = useNavigate();
+
     const [eraList, setEraList] = useState<Era[]>([]);
     const [editingEraIndex, setEditingEraIndex] = useState<number>(-1);
 
@@ -94,7 +97,11 @@ const Timeline = () => {
     return (
         <Fragment>
             <Header></Header>
-            <Navbar></Navbar>
+            <Navbar>
+                <div>
+                    <button className={styles["back-to-home-button"]} onClick={() => navigate("/home")}>Back to Home</button>
+                </div>
+            </Navbar>
             <Grid container justifyContent="space-around">
                 <Grid item>
                     {eraList.map((era, idx) => (

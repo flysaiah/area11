@@ -2,6 +2,17 @@
     text-align: center;
 }
 
+.back-to-home-button {
+    position: relative;
+    bottom: 2px;
+    margin-left: 20px;
+    border-radius: 100px;
+}
+
+.back-to-home-button:hover {
+    cursor: pointer;
+}
+
 .eraList {
     width: 500px;
 }

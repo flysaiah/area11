@@ -6,6 +6,7 @@ import CurrentlySelectedPane from './CurrentlySelectedPane/CurrentlySelectedPane
 import FinalistsPane from './FinalistsPane/FinalistsPane';
 import Navbar from "../Navbar/Navbar";
 import Header from "../Header/Header";
+import styles from './Home.module.css';
 
 const Home = () => {
     const [currentlySelected, setCurrentlySelected] = useState<Anime>();
@@ -13,7 +14,11 @@ const Home = () => {
     return (
         <Fragment>
             <Header></Header>
-            <Navbar></Navbar>
+            <Navbar>
+                <div className={styles["search-toolbar-inner-container"]}>
+                    TEST
+                </div>
+            </Navbar>
             <Grid container justifyContent="space-around">
                 <Grid item xs={3}>
                     <CatalogPane setCurrentlySelected={setCurrentlySelected} />
