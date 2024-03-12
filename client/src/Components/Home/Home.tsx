@@ -72,7 +72,7 @@ const Home = () => {
                         <option>{CatalogCategory.Completed}</option>
                     </select>
                     <label className={styles["search-autocomplete-label"]} htmlFor="autocomplete">Search for anime:</label>
-                    <CatalogAutocomplete animeList={animeList} />
+                    <CatalogAutocomplete animeList={animeList} setCurrentlySelected={setCurrentlySelected} />
                 </div>
             </Navbar>
             <Grid container justifyContent="space-around">

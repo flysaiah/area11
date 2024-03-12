@@ -1,0 +1,26 @@
+.autocomplete-option {
+    height: 40px;
+    line-height: 40px;
+    border-bottom: 1px solid gray;
+    overflow: hidden;
+    white-space:nowrap;
+    text-overflow:ellipsis;
+}
+.autocomplete-option:hover {
+    cursor: pointer;
+    background-color: lightgray;
+}
+.autocomplete-option:first-of-type {
+    margin-top: -8px;
+}
+
+.autocomplete-option-text {
+    margin-left: 5px;
+    width: 100px;
+}
+.autocomplete-option-thumbnail {
+    vertical-align: middle;
+    height: 39px;
+    width: 30px;
+    margin-bottom: 3px
+}

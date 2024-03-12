@@ -1,9 +1,15 @@
 import Anime from '../../../Models/anime';
 import { Autocomplete, TextField } from "@mui/material";
+import styles from './CatalogAutocomplete.module.css';
 
-const CatalogAutocomplete = (props: { animeList:Anime[] }) => {
-
+const CatalogAutocomplete = (props: {
+    animeList:Anime[],
+    setCurrentlySelected: React.Dispatch<React.SetStateAction<Anime | undefined>>
+}) => {
+    
     // Setup
+
+    // JSX
 
     return (
         <div id="search-autocomplete">
@@ -12,12 +18,11 @@ const CatalogAutocomplete = (props: { animeList:Anime[] }) => {
                 id="search-autocomplete"
                 options={props.animeList}
                 getOptionLabel={(anime:Anime) => anime.name}
-                renderOption={(props, option:Anime) =>
+                renderOption={(_, option:Anime) =>
                     (
-                        <div key={"autocomplete_option_" + option.name}>
-                            <li>
-                                {option.name}
-                            </li>
+                        <div className={styles["autocomplete-option"]} key={"autocomplete_option_" + option.name} onClick={() => props.setCurrentlySelected(option)}>
+                            <img className={styles["autocomplete-option-thumbnail"]} src={option.thumbnail} alt="Thumbnail"/>
+                            <span className={styles["autocomplete-option-text"]}>{option.name}</span>
                         </div>
                     )}
                 sx={{ width: 200 }}
