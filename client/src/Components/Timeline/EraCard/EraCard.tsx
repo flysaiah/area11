@@ -109,9 +109,9 @@ const EraCard:React.FC<{
                 </div>
             </CardContent>
             <CardActions>
-                {isEditing() ? (<Button variant="contained" style={{"backgroundColor": theme.palette.secondary.dark}} onClick={saveChanges}>Save</Button>) : null}
+                {isEditing() ? (<Button variant="contained" style={{"backgroundColor": theme.palette.secondary.main}} onClick={saveChanges}>Save</Button>) : null}
                 {isEditing() ? (<Button variant="contained" style={{"backgroundColor": theme.palette.warning.main}} onClick={cancelChanges}>Cancel</Button>) : null}
-                {!isEditing() ? (<Button variant="contained" style={{"backgroundColor": theme.palette.secondary.dark}} disabled={!isEditable()} onClick={() => props.setEditingEraIndex(props.index)}>Edit</Button>) : null}
+                {!isEditing() ? (<Button variant="contained" style={{"backgroundColor": theme.palette.secondary.main}} disabled={!isEditable()} onClick={() => props.setEditingEraIndex(props.index)}>Edit</Button>) : null}
                 {props.canAddNewEra ? (<Button variant="contained" disabled={!isEditable() || isEditing()} onClick={props.addNewEra}>Add New Era</Button>) : null}
 
             </CardActions>

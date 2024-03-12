@@ -4,51 +4,35 @@ import ListItem from '@mui/material/ListItem';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemText from '@mui/material/ListItemText';
 import ListSubheader from '@mui/material/ListSubheader';
-import React, { useContext, useEffect, useState } from 'react';
+import React from 'react';
 import Anime from '../../../Models/anime';
-import AuthContext from "../../../Store/AuthContext";
 import Pane from '../../Pane/Pane';
 import styles from './CatalogPane.module.css';
-import OperationResult from "../../../Models/operationresult";
+import CatalogCategory from "../CatalogCategory";
+import CatalogFilters from "../../../Models/CatalogFilters";
 
-const CatalogPane: React.FC<{ setCurrentlySelected: React.Dispatch<React.SetStateAction<Anime | undefined>> }> = (props) => {
+type CatalogPaneProps = {
+    filters: CatalogFilters;
+    animeList: Anime[],
+    setCurrentlySelected: React.Dispatch<React.SetStateAction<Anime | undefined>>;
+}
+
+const CatalogPane: React.FC<CatalogPaneProps> = (props) => {
 
     // Setup
-    const authContext = useContext(AuthContext);
-    const [animeList, setAnimeList] = useState<Anime[]>([]);
 
-    const wantToWatchList = animeList.filter(anime => anime.category === "Want to Watch");
-    const consideringList = animeList.filter(anime => anime.category === "Considering");
-    const completedList = animeList.filter(anime => anime.category === "Completed");
+    // Filters
 
-    // Fetch
+    const getFilteredList = (category:string) => {
+        return props.animeList.filter(anime =>
+            anime.category === category
+            && (props.filters.category === CatalogCategory.AllCategories || props.filters.category === category)
+        );
+    }
 
-    useEffect(() => {
-        let username = authContext.username!;
-        const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'authorization': authContext.token! }, // TODO: refactor into service
-            body: JSON.stringify({ username: username })
-        };
-
-        var uri = process.env.REACT_APP_BACKEND_URI + '/api/anime/fetchAnime'; // move to service
-
-        fetch(uri, requestOptions)
-            .then(response => response.json() as Promise<OperationResult>)
-            .then(res => {
-                if (!res?.success) {
-                    console.log("Error fetching anime list: " + res.message);
-
-                    if (res.message.includes("Area11Error.Auth")) {
-                        authContext.logout();
-                        return;
-                    }
-                }
-
-                setAnimeList(res?.data.animeList);
-            });
-
-    }, [authContext]);
+    const wantToWatchList = getFilteredList(CatalogCategory.WantToWatch);
+    const consideringList = getFilteredList(CatalogCategory.Considering);
+    const completedList = getFilteredList(CatalogCategory.Completed);
 
     // JSX
 

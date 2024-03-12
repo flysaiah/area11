@@ -1,4 +1,4 @@
-import { blue, blueGrey, deepOrange, lightBlue } from "@mui/material/colors";
+import { deepOrange } from "@mui/material/colors";
 import { createTheme } from "@mui/material/styles";
  
 export const AppTheme = createTheme({
@@ -19,7 +19,25 @@ export const AppTheme = createTheme({
         A400 : '#ff1d21',
         A700 : '#ff0308',
     },
-    secondary: lightBlue,
+    secondary: {
+        main : '#3e85c6'
+    },
     warning: deepOrange
+  },
+  components: {
+    MuiAutocomplete: {
+        styleOverrides: {
+            root: {
+                backgroundColor: "white",
+                height: "20px",
+                minHeight: "20px"
+            },
+            inputRoot: {
+                height: "20px",
+                minHeight: "20px",
+                borderRadius: "0px"
+            },
+        }
+    }
   }
 });
