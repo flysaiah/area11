@@ -12,3 +12,12 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+/* Hacks */
+#search-autocomplete div {
+    padding: 0px !important;
+}
+
+#search-autocomplete input {
+    padding: 0px !important;
+}

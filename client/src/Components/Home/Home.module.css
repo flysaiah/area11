@@ -1,0 +1,25 @@
+.search-toolbar-inner-container {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    width: 800px;
+    float: right;
+    margin-right: 50px;
+    font-size: 14px;
+    bottom: 1px;
+    position: relative;
+}
+.category-select {
+    width: 200px;
+}
+.category-select-label {
+    margin-right: 5px;
+    position: relative;
+    bottom: 1px;
+}
+.search-autocomplete-label {
+    margin-left: 10px;
+    margin-right: 5px;
+    position: relative;
+    bottom: 1px;
+}
