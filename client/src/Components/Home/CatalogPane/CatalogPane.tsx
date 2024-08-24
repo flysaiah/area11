@@ -1,3 +1,4 @@
+import CircularProgress from '@mui/material/CircularProgress';
 import Divider from '@mui/material/Divider';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -14,7 +15,8 @@ import CatalogFilters from "../../../Models/CatalogFilters";
 type CatalogPaneProps = {
     filters: CatalogFilters;
     animeList: Anime[],
-    setCurrentlySelected: React.Dispatch<React.SetStateAction<Anime | undefined>>;
+    setCurrentlySelected: React.Dispatch<React.SetStateAction<Anime | undefined>>,
+    isLoading: boolean;
 }
 
 const CatalogPane: React.FC<CatalogPaneProps> = (props) => {
@@ -48,7 +50,13 @@ const CatalogPane: React.FC<CatalogPaneProps> = (props) => {
         lineHeight: "30px"
     }
 
-    return (
+    return props.isLoading ? (
+        <Pane className={styles["catalog-pane"]}>
+            <p>Loading catalog information...</p>
+            <CircularProgress />
+        </Pane>
+    )
+    : (
         <Pane className={styles["catalog-pane"]}>
             <List dense={true} sx={listSX}>
                 <ListSubheader sx={subheaderSX}>Want to Watch ({wantToWatchList.length})</ListSubheader>

@@ -22,6 +22,7 @@ const Home = () => {
     const [animeList, setAnimeList] = useState<Anime[]>([]);
     const [currentlySelected, setCurrentlySelected] = useState<Anime>();
     const [filters, setFilters] = useState<CatalogFilters>(new CatalogFilters(CatalogCategory.AllCategories));
+    const [isLoading, setIsLoading] = useState<boolean>(true);
 
     const updateSelectedCategory = (category: string) => {
         setFilters({
@@ -55,6 +56,7 @@ const Home = () => {
                 }
 
                 setAnimeList(res?.data.animeList);
+                setIsLoading(false);
             });
 
     }, [authContext]);
@@ -77,13 +79,13 @@ const Home = () => {
             </Navbar>
             <Grid container justifyContent="space-around">
                 <Grid item xs={3}>
-                    <CatalogPane animeList={animeList} filters={filters} setCurrentlySelected={setCurrentlySelected} />
+                    <CatalogPane isLoading={isLoading} animeList={animeList} filters={filters} setCurrentlySelected={setCurrentlySelected} />
                 </Grid>
                 <Grid item xs={4}>
                     <CurrentlySelectedPane currentlySelected={currentlySelected} />
                 </Grid>
                 <Grid item xs={3}>
-                    <FinalistsPane />
+                    <FinalistsPane isLoading={isLoading} />
                 </Grid>
             </Grid>
         </Fragment>
