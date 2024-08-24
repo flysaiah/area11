@@ -17,6 +17,7 @@ type CatalogPaneProps = {
     animeList: Anime[],
     setCurrentlySelected: React.Dispatch<React.SetStateAction<Anime | undefined>>,
     isLoading: boolean;
+    forceRefresh: number
 }
 
 const CatalogPane: React.FC<CatalogPaneProps> = (props) => {

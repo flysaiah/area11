@@ -6,7 +6,17 @@ module.exports = (router) => {
             if (err) {
                 res.json({ success: false, message: err });
             } else {
-                res.json({ success: true, data: { animeList: animeList } })
+                res.json({ success: true, data: { animeList: animeList } });
+            }
+        });
+    });
+
+    router.post('/changeCategory', (req, res) => {
+        Anime.findOneAndUpdate({ _id: req.body.id }, { category: req.body.category }, (err, anime) => {
+            if (err) {
+                res.json({ success: false, message: err });
+            } else {
+                res.json({ success: true });
             }
         });
     });

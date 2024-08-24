@@ -26,6 +26,7 @@ app.use('/api/user', userAPI);
 app.use('/api/anime', animeAPI);
 app.use('/api/timeline', timelineAPI);
 
+mongoose.set("strictQuery", true);
 mongoose
     .connect(
         process.env.MONGODB_CONNECTION_STRING,

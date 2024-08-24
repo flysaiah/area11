@@ -1,5 +1,7 @@
 .content-container {
     padding: 10px;
+    overflow: auto;
+    max-height: 640px;
 }
 
 .title {
@@ -10,5 +12,9 @@
 .pane {
     overflow: scroll;
     height: 700px;
-    /* max-height: 700px; TODO: make this global var */
+}
+
+.button-container {
+    border-top: 1px solid #c3c3c3;
+    padding-top: 5px;
 }

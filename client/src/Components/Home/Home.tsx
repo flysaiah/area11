@@ -23,6 +23,8 @@ const Home = () => {
     const [currentlySelected, setCurrentlySelected] = useState<Anime>();
     const [filters, setFilters] = useState<CatalogFilters>(new CatalogFilters(CatalogCategory.AllCategories));
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [forceRefresh, setForceRefresh] = useState<number>(0);
+    const [forceServerRefresh, setForceServerRefresh] = useState<number>(0);
 
     const updateSelectedCategory = (category: string) => {
         setFilters({
@@ -30,6 +32,36 @@ const Home = () => {
             category: category
         })
     };
+
+    const handleCurrentlySelectedAnimeUpdate = () =>  {
+
+        const requestOptions = {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json', 'authorization': authContext.token! }, // TODO: refactor into service
+            body: JSON.stringify({ id: currentlySelected?._id, category: currentlySelected?.category })
+        };
+
+        var uri = process.env.REACT_APP_BACKEND_URI + '/api/anime/changeCategory'; // move to service
+
+        fetch(uri, requestOptions)
+            .then(response => response.json() as Promise<OperationResult>)
+            .then(res => {
+                if (!res?.success) {
+                    console.log("Error updating anime: " + res.message);
+
+                    if (res.message.includes("Area11Error.Auth")) {
+                        authContext.logout();
+                        return;
+                    }
+
+                    setForceServerRefresh(forceServerRefresh > 0 ? forceServerRefresh - 1 : forceServerRefresh + 1)
+                }
+                else {
+                    setForceRefresh(forceRefresh > 0 ? forceRefresh - 1 : forceRefresh + 1);
+                }
+            });
+
+    }
 
     // Fetch
 
@@ -59,7 +91,7 @@ const Home = () => {
                 setIsLoading(false);
             });
 
-    }, [authContext]);
+    }, [authContext, forceServerRefresh]);
 
     return (
         <Fragment>
@@ -79,10 +111,10 @@ const Home = () => {
             </Navbar>
             <Grid container justifyContent="space-around">
                 <Grid item xs={3}>
-                    <CatalogPane isLoading={isLoading} animeList={animeList} filters={filters} setCurrentlySelected={setCurrentlySelected} />
+                    <CatalogPane isLoading={isLoading} animeList={animeList} filters={filters} setCurrentlySelected={setCurrentlySelected} forceRefresh={forceRefresh} />
                 </Grid>
                 <Grid item xs={4}>
-                    <CurrentlySelectedPane currentlySelected={currentlySelected} />
+                    <CurrentlySelectedPane currentlySelected={currentlySelected} handleCurrentlySelectedAnimeUpdate={handleCurrentlySelectedAnimeUpdate} />
                 </Grid>
                 <Grid item xs={3}>
                     <FinalistsPane isLoading={isLoading} />
