@@ -1,5 +1,4 @@
-import { Grid } from "@mui/material";
-import React, { Fragment, useContext, useEffect, useState } from 'react';
+import { Fragment, useContext, useEffect, useState } from 'react';
 import Era from "../../Models/era";
 import AuthContext from "../../Store/AuthContext";
 import EraCard from "./EraCard/EraCard";
@@ -36,7 +35,7 @@ const Timeline = () => {
                 setEraList(data.timeline.eras);
             });
 
-    }, []);
+    }, [authContext]);
 
     const saveTimeline = (era: Era) => {
         let newEraList = eraList.map((oldEra, idx) => {
@@ -102,9 +101,9 @@ const Timeline = () => {
                     <button className={styles["back-to-home-button"]} onClick={() => navigate("/home")}>Back to Home</button>
                 </div>
             </Navbar>
-            <Grid container justifyContent="space-around">
-                <Grid item>
-                    {eraList.map((era, idx) => (
+            <div className={styles.timeline}>
+                {eraList.map((era, idx) => (
+                    <div className={idx % 2 === 0 ? styles["container-left"] : styles["container-right"]} key={era.name}>
                         <EraCard
                             key={era.name}
                             era={era}
@@ -114,9 +113,9 @@ const Timeline = () => {
                             saveChanges={(era) => saveTimeline(era)}
                             canAddNewEra={idx === eraList.length - 1}
                             addNewEra={addNewEra}/>
-                    ))}
-                </Grid>
-            </Grid>
+                    </div>
+                ))}
+            </div>
         </Fragment>
     );
 }

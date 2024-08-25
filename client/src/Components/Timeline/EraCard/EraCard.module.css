@@ -1,9 +1,7 @@
 .card {
     margin: 10px;
-    width: 500px;
-}
-
-.era-header {
+    margin-top: 5px;
+    width: 95%;
     text-align: center;
 }
 
@@ -15,11 +13,27 @@
     margin-bottom: -10px;
 }
 
+.era-horizontal-line {
+    border-top-width: 1px;
+    border-top-color: rgba(0,0,0,.12);
+  }
+
 .entries-editable {
-    width: 450px !important;
+    width: 95%;
 }
 
 .entry {
     margin-top: 0px;
     margin-bottom: 0px;
+    text-align: left;
+}
+
+@media screen and (max-width: 900px) {
+    .card {
+        margin-bottom: 10px;
+        margin-top: 5px;
+        margin-left: 20px;
+        margin-right: 20px;
+        width: 90%;
+    }
 }
