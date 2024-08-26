@@ -1,0 +1,13 @@
+.container {
+    padding: 10px;
+}
+
+.add-button {
+    margin-top: 10px !important;
+    margin-left: 15px !important;
+}
+
+.category-select {
+    margin-top: 20px !important;
+    width: 90% !important;
+}

@@ -16,11 +16,11 @@ module.exports = (router) => {
     });
   });
 
-  router.post('/fetchTimeline', (req, res) => {
+  router.get('/fetchTimeline', (req, res) => {
 
-    if (req.body.user) {
+    if (req.decoded.username) {
       // First make sure both users are in the same group
-      User.findOne({ "username": req.body.user }, (err, user) => {
+      User.findOne({ "username": req.decoded.username }, (err, user) => {
         if (err) {
           res.json({ success: false, message: err });
         } else if (!user) {

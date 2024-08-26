@@ -22,9 +22,8 @@ const Timeline = () => {
     useEffect(() => {
         let username = authContext.username!;
         const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'authorization': authContext.token! },
-            body: JSON.stringify({ username: username })
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json', 'authorization': authContext.token! }
         };
 
         var uri = process.env.REACT_APP_BACKEND_URI + '/api/timeline/fetchTimeline'; // move to service

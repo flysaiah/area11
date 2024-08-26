@@ -12,6 +12,7 @@ import CatalogFilters from "../../Models/CatalogFilters";
 import AuthContext from "../../Store/AuthContext";
 import OperationResult from "../../Models/operationresult";
 import CatalogAutocomplete from "./CatalogAutocomplete/CatalogAutocomplete";
+import AddAnimeTool from './AddAnimeTool/AddAnimeTool';
 
 const Home = () => {
 
@@ -22,9 +23,18 @@ const Home = () => {
     const [animeList, setAnimeList] = useState<Anime[]>([]);
     const [currentlySelected, setCurrentlySelected] = useState<Anime>();
     const [filters, setFilters] = useState<CatalogFilters>(new CatalogFilters(CatalogCategory.AllCategories));
+    const [addAnimeToolOpen, setAddAnimeToolOpen] = useState<boolean>(false);
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [forceRefresh, setForceRefresh] = useState<number>(0);
     const [forceServerRefresh, setForceServerRefresh] = useState<number>(0);
+
+    const doLocalRefresh = () => {
+        setForceRefresh(forceRefresh > 0 ? forceRefresh - 1 : forceRefresh + 1);
+    }
+
+    const doServerRefresh = () => {
+        setForceServerRefresh(forceServerRefresh > 0 ? forceServerRefresh - 1 : forceServerRefresh + 1)
+    }
 
     const updateSelectedCategory = (category: string) => {
         setFilters({
@@ -53,11 +63,10 @@ const Home = () => {
                         authContext.logout();
                         return;
                     }
-
-                    setForceServerRefresh(forceServerRefresh > 0 ? forceServerRefresh - 1 : forceServerRefresh + 1)
+                    doServerRefresh();
                 }
                 else {
-                    setForceRefresh(forceRefresh > 0 ? forceRefresh - 1 : forceRefresh + 1);
+                    doLocalRefresh();
                 }
             });
 
@@ -66,11 +75,11 @@ const Home = () => {
     // Fetch
 
     useEffect(() => {
-        let username = authContext.username!;
+        setIsLoading(true);
+
         const requestOptions = {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'authorization': authContext.token! }, // TODO: refactor into service
-            body: JSON.stringify({ username: username })
+            method: 'GET',
+            headers: { 'Content-Type': 'application/json', 'authorization': authContext.token! } // TODO: refactor into service
         };
 
         var uri = process.env.REACT_APP_BACKEND_URI + '/api/anime/fetchAnime'; // move to service
@@ -98,6 +107,8 @@ const Home = () => {
             <Header></Header>
             <Navbar>
                 <div className={styles["search-toolbar-inner-container"]}>
+                    {addAnimeToolOpen ? null : <button className={styles["add-anime-button"]} onClick={() => setAddAnimeToolOpen(true)}>Add Anime</button>}
+                    {!addAnimeToolOpen ? null : <button className={styles["add-anime-button"]} onClick={() => setAddAnimeToolOpen(false)}>Stop Adding Anime</button>}
                     <label className={styles["category-select-label"]} htmlFor="category-select">Filter by Category:</label>
                     <select id="category-select" onChange={(event) => updateSelectedCategory(event.target.value)}>
                         <option>{CatalogCategory.AllCategories}</option>
@@ -111,6 +122,7 @@ const Home = () => {
             </Navbar>
             <Grid container justifyContent="space-around">
                 <Grid item xs={3}>
+                    {!addAnimeToolOpen ? null : <AddAnimeTool handleAddAnimeComplete={doServerRefresh}/>}
                     <CatalogPane isLoading={isLoading} animeList={animeList} filters={filters} setCurrentlySelected={setCurrentlySelected} forceRefresh={forceRefresh} />
                 </Grid>
                 <Grid item xs={4}>

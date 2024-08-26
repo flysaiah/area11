@@ -13,10 +13,8 @@ module.exports = (router) => {
         } else if (!user) {
             res.json({ success: false, message: "Username not found." });
         } else {
-          // Need this because of hashed passwords
           if (user.comparePassword(req.body.password)) {
-            // Password checks out
-            const token = jwt.sign({ userId: user._id }, config.secret, { expiresIn: '504h' });
+            const token = jwt.sign({ username: user.username, userId: user._id }, config.secret, { expiresIn: '504h' });
             res.json({ success: true, message: "Success", data: { token: token, user: { username: user.username } }});
           } else {
             res.json({ success: false, message: "Incorrect password." });
