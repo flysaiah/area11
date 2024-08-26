@@ -13,12 +13,20 @@ import AuthContext from "../../Store/AuthContext";
 import OperationResult from "../../Models/operationresult";
 import CatalogAutocomplete from "./CatalogAutocomplete/CatalogAutocomplete";
 import AddAnimeTool from './AddAnimeTool/AddAnimeTool';
+import { useTheme } from '@mui/material';
 
-const Home = () => {
+type HomeProps = {
+    showToast: (message:string, isError:boolean) => void;
+}
+
+const Home: React.FC<HomeProps> = (props) => {
 
     // Setup
 
+    let timeoutId:NodeJS.Timeout;
+
     const authContext = useContext(AuthContext);
+    const theme = useTheme();
 
     const [animeList, setAnimeList] = useState<Anime[]>([]);
     const [currentlySelected, setCurrentlySelected] = useState<Anime>();
@@ -58,6 +66,7 @@ const Home = () => {
             .then(res => {
                 if (!res?.success) {
                     console.log("Error updating anime: " + res.message);
+                    props.showToast("Error updating anime.", true);
 
                     if (res.message.includes("Area11Error.Auth")) {
                         authContext.logout();
@@ -66,6 +75,8 @@ const Home = () => {
                     doServerRefresh();
                 }
                 else {
+                    props.showToast("Successfully updated category!", false);
+
                     doLocalRefresh();
                 }
             });
@@ -89,6 +100,7 @@ const Home = () => {
             .then(res => {
                 if (!res?.success) {
                     console.log("Error fetching anime list: " + res.message);
+                    props.showToast("Error fetching anime list:.", true);
 
                     if (res.message.includes("Area11Error.Auth")) {
                         authContext.logout();
@@ -122,7 +134,7 @@ const Home = () => {
             </Navbar>
             <Grid container justifyContent="space-around">
                 <Grid item xs={3}>
-                    {!addAnimeToolOpen ? null : <AddAnimeTool handleAddAnimeComplete={doServerRefresh}/>}
+                    {!addAnimeToolOpen ? null : <AddAnimeTool handleAddAnimeComplete={doServerRefresh} showToast={props.showToast}/>}
                     <CatalogPane isLoading={isLoading} animeList={animeList} filters={filters} setCurrentlySelected={setCurrentlySelected} forceRefresh={forceRefresh} />
                 </Grid>
                 <Grid item xs={4}>

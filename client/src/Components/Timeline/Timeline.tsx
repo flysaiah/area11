@@ -7,7 +7,11 @@ import Header from "../Header/Header";
 import Navbar from "../Navbar/Navbar";
 import { useNavigate } from "react-router-dom";
 
-const Timeline = () => {
+type TimelineProps = {
+    showToast: (message:string, isError:boolean) => void;
+}
+
+const Timeline:React.FC<TimelineProps> = (props) => {
 
     // Setup
 
@@ -20,7 +24,6 @@ const Timeline = () => {
     // Fetch
 
     useEffect(() => {
-        let username = authContext.username!;
         const requestOptions = {
             method: 'GET',
             headers: { 'Content-Type': 'application/json', 'authorization': authContext.token! }
@@ -55,14 +58,15 @@ const Timeline = () => {
 
         fetch(uri, requestOptions)
             .then(response => response.json())
-            .then(data => {
-                if (data.success) {
+            .then(res => {
+                if (res.success) {
+                    props.showToast("Timeline saved successfully!", false);
                     setEditingEraIndex(-1);
                     setEraList(newEraList);
                 }
                 else {
-                    window.alert("Error saving timeline.");
-                    console.log(data);
+                    props.showToast("Error saving timeline.", true);
+                    console.log("Error saving timeline. Message=" + res.message + ". Data=" + res.data);
                 }
             });
     }
@@ -81,13 +85,13 @@ const Timeline = () => {
 
         fetch(uri, requestOptions)
             .then(response => response.json())
-            .then(data => {
-                if (data.success) {
+            .then(res => {
+                if (res.success) {
                     setEraList(newEraList);
                 }
                 else {
-                    window.alert("Error saving timeline.");
-                    console.log(data);
+                    props.showToast("Error saving timeline.", true);
+                    console.log("Error saving timeline. Message=" + res.message + ". Data=" + res.data);
                 }
             });
     }

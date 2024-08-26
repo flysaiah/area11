@@ -8,6 +8,7 @@ import OperationResult from '../../../Models/operationresult';
 
 type AddAnimeToolProps = {
     handleAddAnimeComplete: () => void;
+    showToast: (message:string, isError:boolean) => void;
 }
 
 const AddAnimeTool: React.FC<AddAnimeToolProps> = (props) => {
@@ -47,16 +48,20 @@ const AddAnimeTool: React.FC<AddAnimeToolProps> = (props) => {
             .then(response => response.json() as Promise<OperationResult>)
             .then(res => {
                 if (!res?.success) {
-                    console.log("Error adding anime: " + res.message);
-                    console.log(res.data)
+                    console.log("Error adding anime: " + res.message + ". Data=" + res.data);
+                    if (res.message.includes("Area11Error.Conflict")) {
+                        props.showToast("Anime already exists in catalog.", true);
+                    } else {
+                        props.showToast("Error adding anime.", true);
+                    }
 
                     if (res.message.includes("Area11Error.Auth")) {
                         authContext.logout();
                         return;
                     }
-                    // TODO: toast
                 }
                 else {
+                    props.showToast("Successfully added anime!", false);
 
                     setMalUrl("");                  
                     props.handleAddAnimeComplete();

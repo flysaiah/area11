@@ -58,7 +58,7 @@ module.exports = (router) => {
                                 console.log(err);
                                 res.json({ success: false, message: "Error when searching for whether anime was already added.", data: err });
                             } else if (anime) {
-                                res.json({ success: false, message: "Anime has already been added." })
+                                res.json({ success: false, message: "Area11Error.Conflict - Anime has already been added." })
                             } else {
                                 newAnime.save((err) => {
                                     if (err) {
