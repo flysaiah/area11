@@ -1,8 +1,19 @@
+import CircularProgress from '@mui/material/CircularProgress';
 import Pane from '../../Pane/Pane';
 
-const FinalistsPane = () => {
+type FinalistsPaneProps = {
+    isLoading: boolean;
+}
 
-    return (
+const FinalistsPane: React.FC<FinalistsPaneProps> = (props) => {
+
+    return props.isLoading ? (
+        <Pane>
+            <p>Loading finalist information...</p>
+            <CircularProgress />
+        </Pane>
+    )
+    : (
         <Pane>
             Finalists Panel
         </Pane>

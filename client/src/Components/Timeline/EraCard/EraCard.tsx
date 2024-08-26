@@ -94,14 +94,14 @@ const EraCard:React.FC<{
     }
 
     return (
-        <Card variant="outlined" className={styles["card"]} sx={cardSX}>
+        <Card variant="elevation" className={styles["card"]} sx={cardSX}>
             <CardContent>
                 <div className={styles["era-header"]}>
                     {isEditing() ?
                     getEditableHeaders() :
                     getReadOnlyHeaders()}
                 </div>
-                <hr/>
+                <hr className={styles["era-horizontal-line"]} />
                 <div>
                     {isEditing() ?
                     getEditableEntries() :

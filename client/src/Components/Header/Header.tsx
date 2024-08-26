@@ -1,5 +1,5 @@
-import React, { Fragment, useContext, useEffect, useState } from 'react';
-import { Avatar, IconButton, Menu, MenuItem, useTheme } from "@mui/material";
+import React, { useContext, useEffect, useState } from 'react';
+import { Avatar, Menu, MenuItem, useTheme } from "@mui/material";
 import AuthContext from "../../Store/AuthContext";
 import styles from './Header.module.css';
 import OperationResult from "../../Models/operationresult";
@@ -12,7 +12,7 @@ const Header: React.FC<{}> = (props) => {
     const authContext = useContext(AuthContext);
     const theme = useTheme();
     const navigate = useNavigate();
-    const [user, setUser] = useState<null | User>(null);
+    const [, setUser] = useState<null | User>(null);
     const [anchorEl, setAnchorEl] = useState<null | HTMLElement>(null);
     const open = Boolean(anchorEl);
 

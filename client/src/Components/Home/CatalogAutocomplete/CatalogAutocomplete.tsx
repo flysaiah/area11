@@ -4,7 +4,8 @@ import styles from './CatalogAutocomplete.module.css';
 
 const CatalogAutocomplete = (props: {
     animeList:Anime[],
-    setCurrentlySelected: React.Dispatch<React.SetStateAction<Anime | undefined>>
+    setCurrentlySelected: (anime:Anime|undefined) => void,
+    preventCatalogActions: boolean
 }) => {
     
     // Setup
@@ -14,6 +15,7 @@ const CatalogAutocomplete = (props: {
     return (
         <div id="search-autocomplete">
             <Autocomplete
+                disabled={props.preventCatalogActions}
                 disablePortal
                 id="search-autocomplete"
                 options={props.animeList}

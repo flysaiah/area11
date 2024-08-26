@@ -2,7 +2,7 @@
     display: flex;
     justify-content: flex-end;
     align-items: center;
-    width: 800px;
+    width: 100%;
     float: right;
     margin-right: 50px;
     font-size: 14px;
@@ -23,3 +23,19 @@
     position: relative;
     bottom: 1px;
 }
+.add-anime-button {
+    position: absolute;
+    left: 75px;
+    padding-left: 10px;
+    padding-right: 10px;
+    /* line-height: 80px; */
+    border-radius: 25px;
+}
+.add-anime-button:hover {
+    cursor: pointer;
+}
+
+.add-anime-button:active {
+    background-color: darkgray;
+    transition: 0s;
+  }

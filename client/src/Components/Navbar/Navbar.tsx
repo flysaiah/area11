@@ -1,4 +1,4 @@
-import React, { PropsWithChildren, useContext, useEffect, useState } from 'react';
+import React, { PropsWithChildren } from 'react';
 import { useTheme } from "@mui/material";
 import styles from './Navbar.module.css';
 

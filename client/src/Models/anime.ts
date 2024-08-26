@@ -17,7 +17,6 @@ export default class Anime {
         public englishTitle?: string,
         public status?: string,
         public recommenders?: { name: string }[],
-        public ownerIsRecommender?: boolean,
         public hasNewSeason?: boolean,
         public runtime?: string,
         public studios?: string,
