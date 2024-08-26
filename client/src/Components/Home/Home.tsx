@@ -158,13 +158,15 @@ const Home: React.FC<HomeProps> = (props) => {
             .then(response => response.json() as Promise<OperationResult>)
             .then(res => {
                 if (!res?.success) {
-                    console.log("Error fetching anime list: " + res.message);
-                    props.showToast("Error fetching anime list:.", true);
+                    console.log("Error fetching anime list. Message: " + res.message + ". Data: " + res.data);
+                    props.showToast("Error fetching anime list. Please try again.", true);
+                    setIsLoading(false);
 
                     if (res.message.includes("Area11Error.Auth")) {
                         authContext.logout();
-                        return;
                     }
+
+                    return;
                 }
 
                 setAnimeList(res?.data.animeList);

@@ -33,6 +33,7 @@ mongoose
         {
             useNewUrlParser: true,
             useUnifiedTopology: true,
+            enableUtf8Validation: false
         }
     )
     .then(() => console.log("MongoDB has been connected"))
