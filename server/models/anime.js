@@ -19,7 +19,6 @@ const animeSchema = new Schema({
     englishTitle: String,
     status: String,
     recommenders: [{ name: String }],
-    ownerIsRecommender: Boolean,
     hasNewSeason: Boolean,
     runtime: String,
     studios: String,

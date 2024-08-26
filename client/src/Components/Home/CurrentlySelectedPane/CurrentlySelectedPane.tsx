@@ -1,20 +1,28 @@
 import { Button, Tooltip, useTheme } from "@mui/material";
-import React, { Fragment } from 'react';
+import React, { Fragment, useContext } from 'react';
 import sanitize from "sanitize-html";
 import Anime from "../../../Models/anime";
 import Pane from '../../Pane/Pane';
 import styles from './CurrentlySelectedPane.module.css'
 import CatalogCategory from "../CatalogCategory";
+import AuthContext from "../../../Store/AuthContext";
 
-const CurrentlySelectedPane: React.FC<{
-    currentlySelected: Anime | undefined,
-    handleCurrentlySelectedAnimeUpdate: () => void}> = (props) => {
+type CurrentlySelectedPaneProps = {
+    currentlySelected: Anime | undefined;
+    preventCatalogActions: boolean;
+    updateCurrentlySelected: () => void;
+    deleteCurrentlySelected: () => void;
+    showToast: (message:string, isError:boolean) => void;
+}
 
+const CurrentlySelectedPane: React.FC<CurrentlySelectedPaneProps> = (props) => {
+
+    const authContext = useContext(AuthContext);
     const theme = useTheme();
 
     const updateCategory = (newCategory: string) => {
         props.currentlySelected!.category = newCategory;
-        props.handleCurrentlySelectedAnimeUpdate();
+        props.updateCurrentlySelected();
     }
 
     const sanitizeDescription = (description: string | undefined) => {
@@ -62,6 +70,46 @@ const CurrentlySelectedPane: React.FC<{
         }).join(", ");
     }
 
+    const isSelfRecommended = (anime:Anime|undefined) => {
+        if (!anime?.recommenders || anime.recommenders.length < 1) {
+            return false;
+        }
+
+        for (let i=0; i<anime.recommenders.length; i++) {
+            if (anime.recommenders[i].name === authContext.username) {
+                return true;
+            }
+        }
+
+        return false;
+    }
+
+    const recommend = () => {
+        const idx = props.currentlySelected!.recommenders!.map(r => r.name).indexOf(authContext.username!);
+
+        if (idx !== -1) {
+            console.log("User is already in recommenders. This shouldn't happen.");
+            props.showToast("Unexpected error when trying to perform recommendation. Please refresh and try again.", true);
+            return;
+        }
+
+        props.currentlySelected!.recommenders!.push({name: authContext.username!});
+        props.updateCurrentlySelected();
+    }
+
+    const unrecommend = () => {
+        const idx = props.currentlySelected!.recommenders!.map(r => r.name).indexOf(authContext.username!);
+
+        if (idx === -1) {
+            console.log("Did not find user in recommenders. This shouldn't happen.");
+            props.showToast("Unexpected error when trying to undo recommendation. Please refresh and try again.", true);
+            return;
+        }
+
+        props.currentlySelected!.recommenders!.splice(idx, 1);
+        props.updateCurrentlySelected();
+    }
+
     var noSelectionPlaceholder = (
         <Pane>
             <div className={styles["content-container"]}>
@@ -91,10 +139,10 @@ const CurrentlySelectedPane: React.FC<{
                         <Tooltip
                             PopperProps={{modifiers: [
                                 {
-                                  name: 'offset',
-                                  options: {
+                                name: 'offset',
+                                options: {
                                     offset: [0, -50], // move tooltip left
-                                  }
+                                }
                                 }
                             ]}}
                             placement="right"
@@ -113,11 +161,14 @@ const CurrentlySelectedPane: React.FC<{
                 <p dangerouslySetInnerHTML={{"__html": sanitizeDescription(props.currentlySelected?.description)}}></p>
             </div>
             <div className={styles["button-container"]}>
-                {props.currentlySelected?.category === CatalogCategory.WantToWatch ? null : (<Button variant="contained" style={{"backgroundColor": theme.palette.secondary.main, "marginRight": "5px", "marginLeft": "5px"}} onClick={() => updateCategory(CatalogCategory.WantToWatch) }>Move to Want to Watch</Button>)}
-                {props.currentlySelected?.category === CatalogCategory.Considering ? null : (<Button variant="contained" style={{"backgroundColor": theme.palette.secondary.main, "marginRight": "5px", "marginLeft": "5px"}} onClick={() => updateCategory(CatalogCategory.Considering)}>Move to Considering</Button>)}
-                {props.currentlySelected?.category === CatalogCategory.Completed ? null : (<Button variant="contained" style={{"backgroundColor": theme.palette.secondary.main, "marginRight": "5px", "marginLeft": "5px"}} onClick={() => updateCategory(CatalogCategory.Completed)}>Move to Completed</Button>)}
+                {props.currentlySelected?.category === CatalogCategory.WantToWatch ? null : (<Button disabled={props.preventCatalogActions} variant="contained" style={{"backgroundColor": theme.palette.secondary.main, "marginRight": "5px", "marginLeft": "5px", "marginBottom": "5px"}} onClick={() => updateCategory(CatalogCategory.WantToWatch) }>Move to Want to Watch</Button>)}
+                {props.currentlySelected?.category === CatalogCategory.Considering ? null : (<Button disabled={props.preventCatalogActions} variant="contained" style={{"backgroundColor": theme.palette.secondary.main, "marginRight": "5px", "marginLeft": "5px", "marginBottom": "5px"}} onClick={() => updateCategory(CatalogCategory.Considering)}>Move to Considering</Button>)}
+                {props.currentlySelected?.category === CatalogCategory.Completed ? null : (<Button disabled={props.preventCatalogActions} variant="contained" style={{"backgroundColor": theme.palette.secondary.main, "marginRight": "5px", "marginLeft": "5px", "marginBottom": "5px"}} onClick={() => updateCategory(CatalogCategory.Completed)}>Move to Completed</Button>)}
+                {!isSelfRecommended(props.currentlySelected) ? (<Button disabled={props.currentlySelected?.category !== CatalogCategory.Completed || props.preventCatalogActions} variant="contained" style={{"backgroundColor": props.currentlySelected?.category !== CatalogCategory.Completed ? "lightgrey" : theme.palette.primary.main, "marginRight": "5px", "marginLeft": "5px", "marginBottom": "5px"}} onClick={recommend}>Recommend</Button>): null}
+                {isSelfRecommended(props.currentlySelected) ? (<Button disabled={props.preventCatalogActions} variant="contained" style={{"backgroundColor": theme.palette.primary.main, "marginRight": "5px", "marginLeft": "5px", "marginBottom": "5px"}} onClick={unrecommend}>Undo Recommend</Button>): null}
+                <Button disabled={props.preventCatalogActions} variant="contained" style={{"backgroundColor": theme.palette.warning.main, "marginRight": "5px", "marginLeft": "5px", "marginBottom": "5px"}} onClick={props.deleteCurrentlySelected}>Remove from Catalog</Button>
             </div>
-        </Pane>
+        </Pane>        
     )
 
     return props.currentlySelected == null ? noSelectionPlaceholder : regularView;

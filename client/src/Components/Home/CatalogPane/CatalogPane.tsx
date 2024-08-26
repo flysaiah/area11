@@ -15,7 +15,7 @@ import CatalogFilters from "../../../Models/CatalogFilters";
 type CatalogPaneProps = {
     filters: CatalogFilters;
     animeList: Anime[],
-    setCurrentlySelected: React.Dispatch<React.SetStateAction<Anime | undefined>>,
+    setCurrentlySelected: (anime:Anime | undefined) => void,
     isLoading: boolean;
     forceRefresh: number
 }

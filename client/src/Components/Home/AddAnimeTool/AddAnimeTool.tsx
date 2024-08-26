@@ -9,6 +9,7 @@ import OperationResult from '../../../Models/operationresult';
 type AddAnimeToolProps = {
     handleAddAnimeComplete: () => void;
     showToast: (message:string, isError:boolean) => void;
+    preventCatalogActions: boolean;
 }
 
 const AddAnimeTool: React.FC<AddAnimeToolProps> = (props) => {
@@ -74,7 +75,7 @@ const AddAnimeTool: React.FC<AddAnimeToolProps> = (props) => {
     return (
     <Pane className={styles.container}>
        <TextField label="MyAnimeList URL" variant="standard" value={malUrl} onChange={handleUrlChange} />
-       <Button disabled={currentlyAddingAnime} variant="contained" className={styles["add-button"]} style={{"backgroundColor": theme.palette.secondary.main}} onClick={addAnime}>Add</Button>
+       <Button disabled={currentlyAddingAnime || props.preventCatalogActions} variant="contained" className={styles["add-button"]} style={{"backgroundColor": theme.palette.secondary.main}} onClick={addAnime}>Add</Button>
        <FormControl sx={{ m: 1, minWidth: 120 }} size="small" variant="standard" className={styles["category-select"]}>
         <InputLabel id="category-select-label">Add To</InputLabel>
             <Select

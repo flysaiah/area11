@@ -17,13 +17,31 @@ module.exports = (router) => {
         });
     });
 
-    router.post('/changeCategory', (req, res) => {
-        Anime.findOneAndUpdate({ _id: req.body.id }, { category: req.body.category }, (err, anime) => {
+    router.post('/updateAnime', (req, res) => {
+        Anime.findOneAndUpdate({ _id: req.body.id }, { category: req.body.category, recommenders: req.body.recommenders }, (err, anime) => {
             if (err) {
                 console.log(err);
                 res.json({ success: false, message: "Error finding anime.", data: err });
             } else {
                 res.json({ success: true });
+            }
+        });
+    });
+
+    router.post('/deleteAnime', (req, res) => {
+        if (!req.body?.id) {
+            res.json({ success: false, message: "No ID in request"});
+            return;
+        }
+
+        Anime.findOneAndDelete({ _id: req.body.id }, (err, anime) => {
+            if (err) {
+                res.json({ success: false, message: "Error finding anime.", data: err });
+            } else if (!anime) {
+                res.json({ success: false, message: "Anime already deleted." });
+            }
+            else {
+                res.json({ success: true, message: "Successfully deleted anime!"});
             }
         });
     });

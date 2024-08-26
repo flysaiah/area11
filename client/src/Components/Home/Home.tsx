@@ -13,6 +13,7 @@ import AuthContext from "../../Store/AuthContext";
 import OperationResult from "../../Models/operationresult";
 import CatalogAutocomplete from "./CatalogAutocomplete/CatalogAutocomplete";
 import AddAnimeTool from './AddAnimeTool/AddAnimeTool';
+import { Button, Dialog, DialogActions, DialogContent, DialogContentText, DialogTitle } from '@mui/material';
 
 type HomeProps = {
     showToast: (message:string, isError:boolean) => void;
@@ -31,6 +32,14 @@ const Home: React.FC<HomeProps> = (props) => {
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [forceRefresh, setForceRefresh] = useState<number>(0);
     const [forceServerRefresh, setForceServerRefresh] = useState<number>(0);
+    const [preventCatalogActions, setPreventCatalogActions] = useState<boolean>(false);
+    const [openDeleteDialog, setOpenDeleteDialog] = useState<boolean>(false);
+
+    const safeSetCurrentlySelected = (anime:Anime|undefined) => {
+        if (!preventCatalogActions) {
+            setCurrentlySelected(anime);
+        }
+    }
 
     const doLocalRefresh = () => {
         setForceRefresh(forceRefresh > 0 ? forceRefresh - 1 : forceRefresh + 1);
@@ -47,15 +56,25 @@ const Home: React.FC<HomeProps> = (props) => {
         })
     };
 
-    const handleCurrentlySelectedAnimeUpdate = () =>  {
+    const updateCurrentlySelected = () =>  {
+        if (preventCatalogActions) {
+            return;
+        }
+
+        setPreventCatalogActions(true);
+
+        if (!currentlySelected) {
+            console.log("Error: no currently selected anime");
+            return;
+        }
 
         const requestOptions = {
             method: 'POST',
-            headers: { 'Content-Type': 'application/json', 'authorization': authContext.token! }, // TODO: refactor into service
-            body: JSON.stringify({ id: currentlySelected?._id, category: currentlySelected?.category })
+            headers: { 'Content-Type': 'application/json', 'authorization': authContext.token! }, // TODO: refactor all of this into service
+            body: JSON.stringify({ id: currentlySelected._id, category: currentlySelected.category, recommenders: currentlySelected.recommenders })
         };
 
-        var uri = process.env.REACT_APP_BACKEND_URI + '/api/anime/changeCategory'; // move to service
+        var uri = process.env.REACT_APP_BACKEND_URI + '/api/anime/updateAnime';
 
         fetch(uri, requestOptions)
             .then(response => response.json() as Promise<OperationResult>)
@@ -71,12 +90,56 @@ const Home: React.FC<HomeProps> = (props) => {
                     doServerRefresh();
                 }
                 else {
-                    props.showToast("Successfully updated category!", false);
+                    props.showToast("Successfully updated anime!", false);
 
                     doLocalRefresh();
                 }
-            });
 
+                setPreventCatalogActions(false);
+            });
+    }
+
+    const deleteCurrentlySelected = () => {
+        setPreventCatalogActions(true);
+        setOpenDeleteDialog(true);
+    }
+
+    const handleDeleteDialogClose = (deleteConfirmed:boolean) => {
+        if (deleteConfirmed) {
+            const requestOptions = {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json', 'authorization': authContext.token! }, // TODO: refactor all of this into service
+                body: JSON.stringify({ id: currentlySelected?._id })
+            };
+    
+            var uri = process.env.REACT_APP_BACKEND_URI + '/api/anime/deleteAnime';
+    
+            fetch(uri, requestOptions)
+                .then(response => response.json() as Promise<OperationResult>)
+                .then(res => {
+                    if (!res?.success) {
+                        console.log("Error deleting anime: " + res.message);
+                        props.showToast("Error deleting anime.", true);
+    
+                        if (res.message.includes("Area11Error.Auth")) {
+                            authContext.logout();
+                            return;
+                        }
+                    }
+                    else {
+                        props.showToast("Successfully deleted anime!", false);
+                    }
+    
+                    setCurrentlySelected(undefined);
+                    doServerRefresh();
+                    setPreventCatalogActions(false);
+                    setOpenDeleteDialog(false);
+                });
+        }
+        else {
+            setPreventCatalogActions(false);
+            setOpenDeleteDialog(false);
+        }
     }
 
     // Fetch
@@ -108,38 +171,58 @@ const Home: React.FC<HomeProps> = (props) => {
                 setIsLoading(false);
             });
 
-    }, [props, authContext, forceServerRefresh]);
+    }, [authContext, forceServerRefresh]);
 
     return (
         <Fragment>
             <Header></Header>
             <Navbar>
                 <div className={styles["search-toolbar-inner-container"]}>
-                    {addAnimeToolOpen ? null : <button className={styles["add-anime-button"]} onClick={() => setAddAnimeToolOpen(true)}>Add Anime</button>}
-                    {!addAnimeToolOpen ? null : <button className={styles["add-anime-button"]} onClick={() => setAddAnimeToolOpen(false)}>Stop Adding Anime</button>}
+                    {addAnimeToolOpen ? null : <button disabled={preventCatalogActions} className={styles["add-anime-button"]} onClick={() => setAddAnimeToolOpen(true)}>Add Anime</button>}
+                    {!addAnimeToolOpen ? null : <button disabled={preventCatalogActions} className={styles["add-anime-button"]} onClick={() => setAddAnimeToolOpen(false)}>Stop Adding Anime</button>}
                     <label className={styles["category-select-label"]} htmlFor="category-select">Filter by Category:</label>
-                    <select id="category-select" onChange={(event) => updateSelectedCategory(event.target.value)}>
+                    <select disabled={preventCatalogActions} id="category-select" onChange={(event) => updateSelectedCategory(event.target.value)}>
                         <option>{CatalogCategory.AllCategories}</option>
                         <option>{CatalogCategory.WantToWatch}</option>
                         <option>{CatalogCategory.Considering}</option>
                         <option>{CatalogCategory.Completed}</option>
                     </select>
                     <label className={styles["search-autocomplete-label"]} htmlFor="autocomplete">Search for anime:</label>
-                    <CatalogAutocomplete animeList={animeList} setCurrentlySelected={setCurrentlySelected} />
+                    <CatalogAutocomplete animeList={animeList} setCurrentlySelected={safeSetCurrentlySelected} preventCatalogActions={preventCatalogActions} />
                 </div>
             </Navbar>
             <Grid container justifyContent="space-around">
                 <Grid item xs={3}>
-                    {!addAnimeToolOpen ? null : <AddAnimeTool handleAddAnimeComplete={doServerRefresh} showToast={props.showToast}/>}
-                    <CatalogPane isLoading={isLoading} animeList={animeList} filters={filters} setCurrentlySelected={setCurrentlySelected} forceRefresh={forceRefresh} />
+                    {!addAnimeToolOpen ? null : <AddAnimeTool handleAddAnimeComplete={doServerRefresh} showToast={props.showToast} preventCatalogActions={preventCatalogActions}/>}
+                    <CatalogPane isLoading={isLoading} animeList={animeList} filters={filters} setCurrentlySelected={safeSetCurrentlySelected} forceRefresh={forceRefresh} />
                 </Grid>
                 <Grid item xs={4}>
-                    <CurrentlySelectedPane currentlySelected={currentlySelected} handleCurrentlySelectedAnimeUpdate={handleCurrentlySelectedAnimeUpdate} />
+                    <CurrentlySelectedPane currentlySelected={currentlySelected} preventCatalogActions={preventCatalogActions} updateCurrentlySelected={updateCurrentlySelected} deleteCurrentlySelected={deleteCurrentlySelected} showToast={props.showToast}/>
                 </Grid>
                 <Grid item xs={3}>
                     <FinalistsPane isLoading={isLoading} />
                 </Grid>
             </Grid>
+            <Dialog
+                open={openDeleteDialog}
+                onClose={() => setOpenDeleteDialog(false)}
+                aria-labelledby="delete-dialog-title"
+            >
+                <DialogTitle id="delete-dialog-title">
+                Confirm Deletion of {currentlySelected?.name}
+                </DialogTitle>
+                <DialogContent>
+                    <DialogContentText>
+                        Are you sure you want to delete {currentlySelected?.name} from your catalog?
+                    </DialogContentText>
+                </DialogContent>
+                <DialogActions>
+                    <Button autoFocus onClick={() => handleDeleteDialogClose(false)}>
+                        Cancel
+                    </Button>
+                    <Button onClick={() => handleDeleteDialogClose(true)}>Confirm</Button>
+                </DialogActions>
+            </Dialog>
         </Fragment>
     );
 }
