@@ -9,6 +9,36 @@
     margin-bottom: 8px;
 }
 
+.content-details-container {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-around;
+}
+
+.content-details-misc-container {
+    display: inline-block;
+    width: 35%;
+    text-align: left;
+    font-size: 14px;
+}
+
+@media screen and (max-width: 1200px) {
+    .content-details-container {
+        display: block;
+        text-align: center;
+    }
+
+    .content-details-misc-container {
+        width: 100%;
+        text-align: center;
+    }
+}
+
+.content-details-misc-container p {
+    margin-top: 0px;
+    margin-bottom: 5px;
+}
+
 .pane {
     overflow: scroll;
     height: 700px;

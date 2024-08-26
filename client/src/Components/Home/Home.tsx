@@ -13,7 +13,6 @@ import AuthContext from "../../Store/AuthContext";
 import OperationResult from "../../Models/operationresult";
 import CatalogAutocomplete from "./CatalogAutocomplete/CatalogAutocomplete";
 import AddAnimeTool from './AddAnimeTool/AddAnimeTool';
-import { useTheme } from '@mui/material';
 
 type HomeProps = {
     showToast: (message:string, isError:boolean) => void;
@@ -23,10 +22,7 @@ const Home: React.FC<HomeProps> = (props) => {
 
     // Setup
 
-    let timeoutId:NodeJS.Timeout;
-
     const authContext = useContext(AuthContext);
-    const theme = useTheme();
 
     const [animeList, setAnimeList] = useState<Anime[]>([]);
     const [currentlySelected, setCurrentlySelected] = useState<Anime>();
@@ -112,7 +108,7 @@ const Home: React.FC<HomeProps> = (props) => {
                 setIsLoading(false);
             });
 
-    }, [authContext, forceServerRefresh]);
+    }, [props, authContext, forceServerRefresh]);
 
     return (
         <Fragment>
