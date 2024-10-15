@@ -18,15 +18,19 @@ const FinalistsPane: React.FC<FinalistsPaneProps> = (props) => {
         return v.isFinalist === true;
     });
 
-    const [isShuffled, setIsShuffled] = useState<number>(0);
+    const [shuffleMap, setShuffleMap] = useState<Map<string, number>|null>(null);
 
-    if (isShuffled !== 0) {
-        for (var i = finalistList.length - 1; i >= 0; i--) {
-            var j = Math.floor(Math.random() * (i + 1));
-            var temp = finalistList[i];
-            finalistList[i] = finalistList[j];
-            finalistList[j] = temp;
-        }
+    if (shuffleMap && shuffleMap.size > 0) {
+        finalistList.sort((a, b) => {
+            let aVal = shuffleMap.get(a.name);
+            let bVal = shuffleMap.get(b.name);
+
+            if (!aVal || !bVal) {
+                return 0;
+            }
+
+            return aVal < bVal ? 1 : -1;
+        })
     }
 
     const removeFinalist = (anime:Anime) => {
@@ -35,7 +39,13 @@ const FinalistsPane: React.FC<FinalistsPaneProps> = (props) => {
     }
 
     const shuffle = () => {
-        setIsShuffled(Math.random());
+        let newMap = new Map<string, number>();
+
+        for (let i = 0; i < props.animeList.length; i++) {
+            newMap.set(props.animeList[i].name, Math.random());
+        }
+
+        setShuffleMap(newMap);
     }
 
     if (props.isLoading) {
