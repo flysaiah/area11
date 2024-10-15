@@ -49,7 +49,7 @@ module.exports = (router) => {
 
     router.post('/addAnime', async (req, res) => {
         
-        await puppeteer.launch({ headless: 'new' }).then(async browser => {
+        await puppeteer.launch({ headless: 'new', args: ['--no-sandbox'] }).then(async browser => {
 
             const page = await browser.newPage();
 
