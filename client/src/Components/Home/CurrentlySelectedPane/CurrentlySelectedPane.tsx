@@ -10,7 +10,7 @@ import AuthContext from "../../../Store/AuthContext";
 type CurrentlySelectedPaneProps = {
     currentlySelected: Anime | undefined;
     preventCatalogActions: boolean;
-    updateCurrentlySelected: () => void;
+    updateCurrentlySelected: (toastMessage: string) => void;
     deleteCurrentlySelected: () => void;
     showToast: (message:string, isError:boolean) => void;
 }
@@ -22,7 +22,7 @@ const CurrentlySelectedPane: React.FC<CurrentlySelectedPaneProps> = (props) => {
 
     const updateCategory = (newCategory: string) => {
         props.currentlySelected!.category = newCategory;
-        props.updateCurrentlySelected();
+        props.updateCurrentlySelected("Successfully updated category!");
     }
 
     const sanitizeDescription = (description: string | undefined) => {
@@ -94,7 +94,7 @@ const CurrentlySelectedPane: React.FC<CurrentlySelectedPaneProps> = (props) => {
         }
 
         props.currentlySelected!.recommenders!.push({name: authContext.username!});
-        props.updateCurrentlySelected();
+        props.updateCurrentlySelected("Successfully recommended anime!");
     }
 
     const unrecommend = () => {
@@ -107,7 +107,12 @@ const CurrentlySelectedPane: React.FC<CurrentlySelectedPaneProps> = (props) => {
         }
 
         props.currentlySelected!.recommenders!.splice(idx, 1);
-        props.updateCurrentlySelected();
+        props.updateCurrentlySelected("Successfully unrecommended anime!");
+    }
+
+    const updateFinalistStatus = (isFinalist: boolean) => {
+        props.currentlySelected!.isFinalist = isFinalist;
+        props.updateCurrentlySelected("Successfully " + (isFinalist ? "" : "un") + "selected anime as finalist!");
     }
 
     var noSelectionPlaceholder = (
@@ -117,6 +122,9 @@ const CurrentlySelectedPane: React.FC<CurrentlySelectedPaneProps> = (props) => {
             </div>
         </Pane>
     )
+
+    // style
+    var buttonFontSize = "12px";
 
     var regularView = (
         <Pane className={styles.pane}>
@@ -161,12 +169,14 @@ const CurrentlySelectedPane: React.FC<CurrentlySelectedPaneProps> = (props) => {
                 <p dangerouslySetInnerHTML={{"__html": sanitizeDescription(props.currentlySelected?.description)}}></p>
             </div>
             <div className={styles["button-container"]}>
-                {props.currentlySelected?.category === CatalogCategory.WantToWatch ? null : (<Button disabled={props.preventCatalogActions} variant="contained" style={{"backgroundColor": theme.palette.secondary.main, "marginRight": "5px", "marginLeft": "5px", "marginBottom": "5px"}} onClick={() => updateCategory(CatalogCategory.WantToWatch) }>Move to Want to Watch</Button>)}
-                {props.currentlySelected?.category === CatalogCategory.Considering ? null : (<Button disabled={props.preventCatalogActions} variant="contained" style={{"backgroundColor": theme.palette.secondary.main, "marginRight": "5px", "marginLeft": "5px", "marginBottom": "5px"}} onClick={() => updateCategory(CatalogCategory.Considering)}>Move to Considering</Button>)}
-                {props.currentlySelected?.category === CatalogCategory.Completed ? null : (<Button disabled={props.preventCatalogActions} variant="contained" style={{"backgroundColor": theme.palette.secondary.main, "marginRight": "5px", "marginLeft": "5px", "marginBottom": "5px"}} onClick={() => updateCategory(CatalogCategory.Completed)}>Move to Completed</Button>)}
-                {!isSelfRecommended(props.currentlySelected) ? (<Button disabled={props.currentlySelected?.category !== CatalogCategory.Completed || props.preventCatalogActions} variant="contained" style={{"backgroundColor": props.currentlySelected?.category !== CatalogCategory.Completed ? "lightgrey" : theme.palette.primary.main, "marginRight": "5px", "marginLeft": "5px", "marginBottom": "5px"}} onClick={recommend}>Recommend</Button>): null}
-                {isSelfRecommended(props.currentlySelected) ? (<Button disabled={props.preventCatalogActions} variant="contained" style={{"backgroundColor": theme.palette.primary.main, "marginRight": "5px", "marginLeft": "5px", "marginBottom": "5px"}} onClick={unrecommend}>Undo Recommend</Button>): null}
-                <Button disabled={props.preventCatalogActions} variant="contained" style={{"backgroundColor": theme.palette.warning.main, "marginRight": "5px", "marginLeft": "5px", "marginBottom": "5px"}} onClick={props.deleteCurrentlySelected}>Remove from Catalog</Button>
+                {props.currentlySelected?.category === CatalogCategory.WantToWatch ? null : (<Button disabled={props.preventCatalogActions} variant="contained" style={{"backgroundColor": theme.palette.secondary.main, "marginRight": "5px", "marginLeft": "5px", "marginBottom": "5px", "fontSize": buttonFontSize}} onClick={() => updateCategory(CatalogCategory.WantToWatch) }>Move to Want to Watch</Button>)}
+                {props.currentlySelected?.category === CatalogCategory.Considering ? null : (<Button disabled={props.preventCatalogActions} variant="contained" style={{"backgroundColor": theme.palette.secondary.main, "marginRight": "5px", "marginLeft": "5px", "marginBottom": "5px", "fontSize": buttonFontSize}} onClick={() => updateCategory(CatalogCategory.Considering)}>Move to Considering</Button>)}
+                {props.currentlySelected?.category === CatalogCategory.Completed ? null : (<Button disabled={props.preventCatalogActions} variant="contained" style={{"backgroundColor": theme.palette.secondary.main, "marginRight": "5px", "marginLeft": "5px", "marginBottom": "5px", "fontSize": buttonFontSize}} onClick={() => updateCategory(CatalogCategory.Completed)}>Move to Completed</Button>)}
+                {props.currentlySelected?.isFinalist === false ? (<Button disabled={props.preventCatalogActions} variant="contained" style={{"backgroundColor": theme.palette.primary.main, "marginRight": "5px", "marginLeft": "5px", "marginBottom": "5px", "fontSize": buttonFontSize}} onClick={() => updateFinalistStatus(true)}>Select as Finalist</Button>) : null}
+                {props.currentlySelected?.isFinalist === true ? (<Button disabled={props.preventCatalogActions} variant="contained" style={{"backgroundColor": theme.palette.primary.main, "marginRight": "5px", "marginLeft": "5px", "marginBottom": "5px", "fontSize": buttonFontSize}} onClick={() => updateFinalistStatus(false)}>Unselect as Finalist</Button>) : null}
+                {!isSelfRecommended(props.currentlySelected) ? (<Button disabled={props.currentlySelected?.category !== CatalogCategory.Completed || props.preventCatalogActions} variant="contained" style={{"backgroundColor": props.currentlySelected?.category !== CatalogCategory.Completed ? "lightgrey" : theme.palette.info.main, "marginRight": "5px", "marginLeft": "5px", "marginBottom": "5px", "fontSize": buttonFontSize, "color": "black"}} onClick={recommend}>Recommend</Button>): null}
+                {isSelfRecommended(props.currentlySelected) ? (<Button disabled={props.preventCatalogActions} variant="contained" style={{"backgroundColor": theme.palette.info.main, "marginRight": "5px", "marginLeft": "5px", "marginBottom": "5px", "fontSize": buttonFontSize, "color": "black"}} onClick={unrecommend}>Unrecommend</Button>): null}
+                <Button disabled={props.preventCatalogActions} variant="contained" style={{"backgroundColor": theme.palette.warning.main, "marginRight": "5px", "marginLeft": "5px", "marginBottom": "5px", "fontSize": buttonFontSize}} onClick={props.deleteCurrentlySelected}>Remove from Catalog</Button>
             </div>
         </Pane>        
     )

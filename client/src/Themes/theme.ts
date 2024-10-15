@@ -21,12 +21,17 @@ const primary:PaletteColorOptions = {
 const secondary:PaletteColorOptions = {
     main : '#3e85c6'
 }
+
+const info:PaletteColorOptions = {
+  main: '#FFD700'
+}
  
 export const AppTheme = createTheme({
   palette: {
     primary: primary,
     secondary: secondary,
-    warning: deepOrange
+    warning: deepOrange,
+    info: info
   },
   components: {
     MuiAutocomplete: {
