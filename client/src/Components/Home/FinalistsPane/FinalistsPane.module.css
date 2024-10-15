@@ -1,0 +1,30 @@
+.default-message {
+    padding: 15px;
+}
+
+.finalist-top-container {
+    padding: 10px;
+    border-bottom: 2px solid #c3c3c3;
+}
+
+.finalist-container {
+    text-align: left;
+    border-bottom: 2px solid #c3c3c3;
+}
+
+.finalist-container-final {
+    text-align: left;
+}
+
+.chip-container {
+    margin-top: 0px;
+    margin-left: 10px;
+    margin-right: 20px;
+    margin-bottom: 5px;
+}
+
+.finalist-title {
+    display: inline-block;
+    margin-top: 5px;
+    margin-left: 20px;
+}

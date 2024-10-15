@@ -56,22 +56,30 @@ const Home: React.FC<HomeProps> = (props) => {
         })
     };
 
-    const updateCurrentlySelected = () =>  {
+    const updateCurrentlySelected = (toastMessage: string) =>  {
+        updateAnime(currentlySelected, toastMessage);
+    }
+
+    const updateAnime = (anime: Anime | undefined, toastMessage: string) => {
         if (preventCatalogActions) {
             return;
         }
 
         setPreventCatalogActions(true);
 
-        if (!currentlySelected) {
-            console.log("Error: no currently selected anime");
+        if (!anime) {
+            console.log("Error: no anime to update!");
             return;
         }
 
         const requestOptions = {
             method: 'POST',
             headers: { 'Content-Type': 'application/json', 'authorization': authContext.token! }, // TODO: refactor all of this into service
-            body: JSON.stringify({ id: currentlySelected._id, category: currentlySelected.category, recommenders: currentlySelected.recommenders })
+            body: JSON.stringify({
+                id: anime._id,
+                category: anime.category,
+                recommenders: anime.recommenders,
+                isFinalist: anime.isFinalist })
         };
 
         var uri = process.env.REACT_APP_BACKEND_URI + '/api/anime/updateAnime';
@@ -90,7 +98,7 @@ const Home: React.FC<HomeProps> = (props) => {
                     doServerRefresh();
                 }
                 else {
-                    props.showToast("Successfully updated anime!", false);
+                    props.showToast(toastMessage, false);
 
                     doLocalRefresh();
                 }
@@ -202,7 +210,7 @@ const Home: React.FC<HomeProps> = (props) => {
                     <CurrentlySelectedPane currentlySelected={currentlySelected} preventCatalogActions={preventCatalogActions} updateCurrentlySelected={updateCurrentlySelected} deleteCurrentlySelected={deleteCurrentlySelected} showToast={props.showToast}/>
                 </Grid>
                 <Grid item xs={3}>
-                    <FinalistsPane isLoading={isLoading} />
+                    <FinalistsPane isLoading={isLoading} animeList={animeList} setCurrentlySelected={setCurrentlySelected} updateAnime={updateAnime} />
                 </Grid>
             </Grid>
             <Dialog

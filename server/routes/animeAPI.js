@@ -19,7 +19,7 @@ module.exports = (router) => {
     });
 
     router.post('/updateAnime', (req, res) => {
-        Anime.findOneAndUpdate({ _id: req.body.id }, { category: req.body.category, recommenders: req.body.recommenders }, (err, anime) => {
+        Anime.findOneAndUpdate({ _id: req.body.id }, { category: req.body.category, recommenders: req.body.recommenders, isFinalist: req.body.isFinalist }, (err, anime) => {
             if (err) {
                 console.log(err);
                 res.json({ success: false, message: "Error finding anime.", data: err });
