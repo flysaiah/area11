@@ -115,6 +115,7 @@ mongoose
         {
             useNewUrlParser: true,
             useUnifiedTopology: true,
+            enableUtf8Validation: false
         }
     )
     .then(async () => {
