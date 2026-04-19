@@ -43,7 +43,7 @@ const AddAnimeTool: React.FC<AddAnimeToolProps> = (props) => {
             body: JSON.stringify({ malUrl: malUrl, category: category })
         };
 
-        var uri = process.env.REACT_APP_BACKEND_URI + '/api/anime/addAnime'; // move to service
+        var uri = import.meta.env.VITE_BACKEND_URI + '/api/anime/addAnime'; // move to service
 
         fetch(uri, requestOptions)
             .then(response => response.json() as Promise<OperationResult>)

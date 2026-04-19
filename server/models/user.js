@@ -23,7 +23,7 @@ userSchema.pre('save', function(next) {
   }
 
   // Encrypt password
-  bcrypt.hash(this.password, null, null, (err, hash) => {
+  bcrypt.hash(this.password, 10, (err, hash) => {
     if (err) {
       return next(err);
     }
