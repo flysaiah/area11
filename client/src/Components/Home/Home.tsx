@@ -82,7 +82,7 @@ const Home: React.FC<HomeProps> = (props) => {
                 isFinalist: anime.isFinalist })
         };
 
-        var uri = process.env.REACT_APP_BACKEND_URI + '/api/anime/updateAnime';
+        var uri = import.meta.env.VITE_BACKEND_URI + '/api/anime/updateAnime';
 
         fetch(uri, requestOptions)
             .then(response => response.json() as Promise<OperationResult>)
@@ -120,7 +120,7 @@ const Home: React.FC<HomeProps> = (props) => {
                 body: JSON.stringify({ id: currentlySelected?._id })
             };
     
-            var uri = process.env.REACT_APP_BACKEND_URI + '/api/anime/deleteAnime';
+            var uri = import.meta.env.VITE_BACKEND_URI + '/api/anime/deleteAnime';
     
             fetch(uri, requestOptions)
                 .then(response => response.json() as Promise<OperationResult>)
@@ -160,7 +160,7 @@ const Home: React.FC<HomeProps> = (props) => {
             headers: { 'Content-Type': 'application/json', 'authorization': authContext.token! } // TODO: refactor into service
         };
 
-        var uri = process.env.REACT_APP_BACKEND_URI + '/api/anime/fetchAnime'; // move to service
+        var uri = import.meta.env.VITE_BACKEND_URI + '/api/anime/fetchAnime'; // move to service
 
         fetch(uri, requestOptions)
             .then(response => response.json() as Promise<OperationResult>)

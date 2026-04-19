@@ -29,7 +29,7 @@ const Timeline:React.FC<TimelineProps> = (props) => {
             headers: { 'Content-Type': 'application/json', 'authorization': authContext.token! }
         };
 
-        var uri = process.env.REACT_APP_BACKEND_URI + '/api/timeline/fetchTimeline'; // move to service
+        var uri = import.meta.env.VITE_BACKEND_URI + '/api/timeline/fetchTimeline'; // move to service
 
         fetch(uri, requestOptions)
             .then(response => response.json())
@@ -54,7 +54,7 @@ const Timeline:React.FC<TimelineProps> = (props) => {
             body: JSON.stringify({ eras: newEraList })
         };
 
-        var uri = process.env.REACT_APP_BACKEND_URI + '/api/timeline/saveTimeline'; // move to service
+        var uri = import.meta.env.VITE_BACKEND_URI + '/api/timeline/saveTimeline'; // move to service
 
         fetch(uri, requestOptions)
             .then(response => response.json())
@@ -81,7 +81,7 @@ const Timeline:React.FC<TimelineProps> = (props) => {
             body: JSON.stringify({ eras: eraList })
         };
 
-        var uri = process.env.REACT_APP_BACKEND_URI + '/api/timeline/saveTimeline'; // move to service
+        var uri = import.meta.env.VITE_BACKEND_URI + '/api/timeline/saveTimeline'; // move to service
 
         fetch(uri, requestOptions)
             .then(response => response.json())

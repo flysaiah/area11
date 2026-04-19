@@ -39,7 +39,7 @@ mongoose
     .then(() => console.log("MongoDB has been connected"))
     .catch((err) => console.log(err));
 
-const PORT = process.env.PORT || 5000;
+const PORT = process.env.PORT || 5001;
 
 // Accessing the path module
 const path = require("path");

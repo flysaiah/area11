@@ -44,7 +44,7 @@ const Header: React.FC<{}> = (props) => {
             headers: { 'Content-Type': 'application/json', 'authorization': authContext.token! } // TODO: refactor into service
         };
 
-        var uri = process.env.REACT_APP_BACKEND_URI + '/api/user/profile';
+        var uri = import.meta.env.VITE_BACKEND_URI + '/api/user/profile';
 
         fetch(uri, requestOptions)
             .then(response => response.json() as Promise<OperationResult>)

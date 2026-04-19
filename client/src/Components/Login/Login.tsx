@@ -23,7 +23,7 @@ const Login = () => {
             body: JSON.stringify({ username: userInfo.username, password: userInfo.password })
         };
 
-        var uri = process.env.REACT_APP_BACKEND_URI + '/authentication/login'; // move to service
+        var uri = import.meta.env.VITE_BACKEND_URI + '/authentication/login'; // move to service
 
         fetch(uri, requestOptions)
             .then(response => response.json() as Promise<OperationResult>)
